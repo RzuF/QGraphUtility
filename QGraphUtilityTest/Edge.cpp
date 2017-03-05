@@ -11,3 +11,13 @@ Edge::Edge(Vertex * start, Vertex * end, int weight, bool oriented) : _start(sta
 Edge::~Edge()
 {
 }
+
+Vertex * Edge::getStart()
+{
+	return _start;
+}
+
+Vertex * Edge::getEnd()
+{
+	return _end;
+}

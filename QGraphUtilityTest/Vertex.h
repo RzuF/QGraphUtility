@@ -10,7 +10,6 @@ class Vertex : public QObject
 
 	int _id;
 	QString _name;
-	int _weight;
 	QList<Edge*> _edges;	
 
 public:
