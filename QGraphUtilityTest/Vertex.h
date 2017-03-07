@@ -18,5 +18,6 @@ public:
 	Vertex(int id, Edge* edge, QString name = "noName");
 	~Vertex();
 
-
+    QList<Edge*> getEdges() const;
+    void addEdge(Edge* newEdge);
 };

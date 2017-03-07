@@ -18,6 +18,6 @@ public:
 	Edge(Vertex* start, Vertex* end, int weight, bool oriented = false);
 	~Edge();
 
-	Vertex* getStart();
-	Vertex* getEnd();
+    Vertex* getStart() const;
+    Vertex* getEnd() const;
 };
