@@ -41,6 +41,16 @@ Graph::~Graph()
     }
 }
 
+bool Graph::importFromAdjacencyList(Graph::AdjacencyListType adjecencyList)
+{
+    for(int i = 0; i < adjecencyList.size(); i++)
+    {
+        addVertex(new Vertex(i));
+    }
+
+
+}
+
 /**
  * @brief Add Vertex* to Graph object and returns index of new added Vertex*. In case of failure to add new Vertex* -1 is returned.
  * @param newVertex Pointer to Vertex object
@@ -57,6 +67,8 @@ int Graph::addVertex(Vertex *newVertex, bool force)
         _vertexList.append(newVertex);
         index = _vertexList.indexOf(newVertex);
     }
+    else
+        throw VertexAlreadyInGraph;
 
     foreach (auto edge, newVertex->getEdges())
     {
@@ -79,7 +91,11 @@ int Graph::getNextId()
 
 Vertex *Graph::operator[](int i) const
 {
-    return _vertexList.at(i);
+    foreach (auto vertex, _vertexList)
+    {
+        if(vertex->getId() == i)
+            return vertex;
+    }
 }
 
 /**
