@@ -39,3 +39,8 @@ void Vertex::addEdge(Edge *newEdge)
     if((newEdge->getStart() == this || newEdge->getEnd() == this) && !_edges.contains(newEdge))
         _edges.append(newEdge);
 }
+
+int Vertex::getId() const
+{
+    return _id;
+}

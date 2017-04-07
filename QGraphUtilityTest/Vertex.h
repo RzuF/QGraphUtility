@@ -20,4 +20,5 @@ public:
 
     QList<Edge*> getEdges() const;
     void addEdge(Edge* newEdge);
+    int getId() const;
 };

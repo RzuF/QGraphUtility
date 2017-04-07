@@ -10,6 +10,11 @@ class QGraphUtilityTest : public QMainWindow
 public:
     QGraphUtilityTest(QWidget *parent = Q_NULLPTR);
 
+private slots:
+    void on_generateButton_clicked();
+
+    void on_vertexSpinBox_valueChanged(int arg1);
+
 private:
     Ui::QGraphUtilityTestClass ui;
 };

@@ -20,4 +20,11 @@ public:
 
     Vertex* getStart() const;
     Vertex* getEnd() const;
+
+    int getWeight() const;
+
+    bool isOriented() const;
+
+    bool setStart(Vertex* start);
+    bool setEnd(Vertex* end);
 };
