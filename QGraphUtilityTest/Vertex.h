@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <stack>
 
 class Edge;
 
@@ -30,6 +31,8 @@ public:
 
     void Visit();
     void UnVisit();
+
+    void DFS(std::stack<int>& currentStack, bool reverse = false);
 
     int getId() const;
     bool isVisited() const;

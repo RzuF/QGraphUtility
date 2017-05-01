@@ -2,7 +2,10 @@
 #include <QLabel>
 #include <QPainter>
 #include <QPicture>
+#include <QtDebug>
+#include <QDebug>
 #include <ctime>
+#include <stack>
 
 Graph::GraphException Graph::VertexAlreadyInGraph("Vertex already in Graph object");
 Graph::GraphException Graph::VertexNumberCannotBeOneOrLess("Vertex number of random Graph object cannot be one or less");
@@ -462,11 +465,21 @@ void Graph::drawGraph(QLabel* label, int radius) const
     label->show();
 }
 
-void Graph::Kosaraju()
+void Graph::Kosaraju(QLabel* label)
 {
     foreach (auto vertex, _vertexList)
     {
         vertex->UnVisit();
+    }
+
+    QString output;
+
+    std::stack<int> Stack;
+
+    foreach(auto vertex, _vertexList)
+    {
+        if(!vertex->isVisited())
+            vertex->DFS(Stack);
     }
 
     auto adjacencyMatrix = this->exportToAdjacenecyMatrix();
@@ -481,8 +494,33 @@ void Graph::Kosaraju()
     }
 
     Graph TransponatedGraph;
-    TransponatedGraph.importFromAdjacencyMatrix(adjacencyMatrix);
+    TransponatedGraph.importFromAdjacencyMatrix(adjacencyMatrix, true);
 
+    int StrongConnectedComponentCounter = 0;
+
+    while(!Stack.empty())
+    {
+        int currentId = Stack.top();
+        Stack.pop();
+        if(TransponatedGraph[currentId]->isVisited())
+            continue;
+
+        StrongConnectedComponentCounter++;
+        std::stack<int> currentMembersOfSCC;
+
+        TransponatedGraph[currentId]->DFS(currentMembersOfSCC, true);
+
+        output.append(QString::number(StrongConnectedComponentCounter)).append(" : ");
+        while(!currentMembersOfSCC.empty())
+        {
+            int currentId = currentMembersOfSCC.top();
+            currentMembersOfSCC.pop();
+            output.append(QString::number(currentId)).append(", ");
+        }
+        output.append("\n");
+    }
+
+    label->setText(output);
 }
 
 /**

@@ -22,6 +22,7 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
@@ -48,9 +49,12 @@ public:
     QLabel *label_3;
     QDoubleSpinBox *probabilitySpinBox;
     QComboBox *graphTypeComboBox;
+    QHBoxLayout *horizontalLayout_4;
+    QRadioButton *transponeGraphRadio;
+    QRadioButton *kosarajuRadio;
     QPushButton *generateButton;
     QLabel *graphShowLabel;
-    QLabel *graphTransponedShowLabel;
+    QLabel *additionalInfoLabel;
     QMenuBar *menuBar;
     QMenu *menuTest;
     QToolBar *mainToolBar;
@@ -142,6 +146,22 @@ public:
 
         verticalLayout->addLayout(horizontalLayout_3);
 
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setSpacing(6);
+        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
+        transponeGraphRadio = new QRadioButton(centralWidget);
+        transponeGraphRadio->setObjectName(QStringLiteral("transponeGraphRadio"));
+
+        horizontalLayout_4->addWidget(transponeGraphRadio);
+
+        kosarajuRadio = new QRadioButton(centralWidget);
+        kosarajuRadio->setObjectName(QStringLiteral("kosarajuRadio"));
+
+        horizontalLayout_4->addWidget(kosarajuRadio);
+
+
+        verticalLayout->addLayout(horizontalLayout_4);
+
         generateButton = new QPushButton(centralWidget);
         generateButton->setObjectName(QStringLiteral("generateButton"));
 
@@ -153,11 +173,11 @@ public:
 
         verticalLayout->addWidget(graphShowLabel);
 
-        graphTransponedShowLabel = new QLabel(centralWidget);
-        graphTransponedShowLabel->setObjectName(QStringLiteral("graphTransponedShowLabel"));
-        graphTransponedShowLabel->setAlignment(Qt::AlignCenter);
+        additionalInfoLabel = new QLabel(centralWidget);
+        additionalInfoLabel->setObjectName(QStringLiteral("additionalInfoLabel"));
+        additionalInfoLabel->setAlignment(Qt::AlignCenter);
 
-        verticalLayout->addWidget(graphTransponedShowLabel);
+        verticalLayout->addWidget(additionalInfoLabel);
 
         QGraphUtilityTestClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(QGraphUtilityTestClass);
@@ -192,9 +212,11 @@ public:
          << QApplication::translate("QGraphUtilityTestClass", "Fixed Probability (Digraph)", Q_NULLPTR)
          << QApplication::translate("QGraphUtilityTestClass", "Fixed Probability", Q_NULLPTR)
         );
+        transponeGraphRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Transponed Graph", Q_NULLPTR));
+        kosarajuRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Kosaraju", Q_NULLPTR));
         generateButton->setText(QApplication::translate("QGraphUtilityTestClass", "Generate new graph", Q_NULLPTR));
         graphShowLabel->setText(QApplication::translate("QGraphUtilityTestClass", "First Graph", Q_NULLPTR));
-        graphTransponedShowLabel->setText(QApplication::translate("QGraphUtilityTestClass", "Second Graph", Q_NULLPTR));
+        additionalInfoLabel->setText(QString());
         menuTest->setTitle(QApplication::translate("QGraphUtilityTestClass", "Test", Q_NULLPTR));
     } // retranslateUi
 

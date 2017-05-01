@@ -35,22 +35,31 @@ void QGraphUtilityTest::on_generateButton_clicked()
             break;
         }
 
-        auto adjacencyMatrix = randomGraph->exportToAdjacenecyMatrix();
-        for(int i = 0; i < randomGraph->getVertexCount(); i++)
+        if(ui.graphTypeComboBox->currentIndex() == 1 && ui.transponeGraphRadio->isChecked())
         {
-            for(int j = i+1; j < randomGraph->getVertexCount(); j++)
+            auto adjacencyMatrix = randomGraph->exportToAdjacenecyMatrix();
+            for(int i = 0; i < randomGraph->getVertexCount(); i++)
             {
-                int tmp = adjacencyMatrix[i][j];
-                adjacencyMatrix[i][j] = adjacencyMatrix[j][i];
-                adjacencyMatrix[j][i] = tmp;
+                for(int j = i+1; j < randomGraph->getVertexCount(); j++)
+                {
+                    int tmp = adjacencyMatrix[i][j];
+                    adjacencyMatrix[i][j] = adjacencyMatrix[j][i];
+                    adjacencyMatrix[j][i] = tmp;
+                }
             }
+
+            QPointer<Graph> TransponatedGraph = new Graph;
+            TransponatedGraph->importFromAdjacencyMatrix(adjacencyMatrix, true);
+
+            TransponatedGraph->drawGraph(ui.additionalInfoLabel);
         }
 
-        QPointer<Graph> TransponatedGraph = new Graph;
-        TransponatedGraph->importFromAdjacencyMatrix(adjacencyMatrix, true);
+        if(ui.graphTypeComboBox->currentIndex() == 1 && ui.kosarajuRadio->isChecked())
+        {
+            randomGraph->Kosaraju(ui.additionalInfoLabel);
+        }
 
-        randomGraph->drawGraph(ui.graphShowLabel);
-        TransponatedGraph->drawGraph(ui.graphTransponedShowLabel);
+        randomGraph->drawGraph(ui.graphShowLabel);                
     }
     catch(Graph::GraphException exception)
     {

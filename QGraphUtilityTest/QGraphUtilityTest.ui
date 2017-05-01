@@ -102,6 +102,24 @@
      </layout>
     </item>
     <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QRadioButton" name="transponeGraphRadio">
+        <property name="text">
+         <string>Transponed Graph</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="kosarajuRadio">
+        <property name="text">
+         <string>Kosaraju</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
      <widget class="QPushButton" name="generateButton">
       <property name="text">
        <string>Generate new graph</string>
@@ -119,9 +137,9 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="graphTransponedShowLabel">
+     <widget class="QLabel" name="additionalInfoLabel">
       <property name="text">
-       <string>Second Graph</string>
+       <string/>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>

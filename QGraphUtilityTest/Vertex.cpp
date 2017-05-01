@@ -1,15 +1,15 @@
 #include "Vertex.h"
 #include "Edge.h"
 
-Vertex::Vertex(int id, QString name) : _id(id), _edges(QList<Edge*>()), _name(name)
+Vertex::Vertex(int id, QString name) : _id(id), _edges(QList<Edge*>()), _name(name), _visited(false)
 {
 }
 
-Vertex::Vertex(int id, QList<Edge*> edges, QString name) : _id(id), _edges(edges), _name(name)
+Vertex::Vertex(int id, QList<Edge*> edges, QString name) : _id(id), _edges(edges), _name(name), _visited(false)
 {
 }
 
-Vertex::Vertex(int id, Edge* edge, QString name) : _id(id), _name(name)
+Vertex::Vertex(int id, Edge* edge, QString name) : _id(id), _name(name), _visited(false)
 {
 	_edges.append(edge);
 }
@@ -65,6 +65,20 @@ void Vertex::Visit()
 void Vertex::UnVisit()
 {
     _visited = false;
+}
+
+void Vertex::DFS(std::stack<int> &currentStack, bool reverse)
+{
+    _visited = true;
+    if(reverse)
+        currentStack.push(_id);
+    foreach (auto vertex, _neighbours)
+    {
+        if(!vertex->isVisited())
+            vertex->DFS(currentStack, reverse);
+    }
+    if(!reverse)
+        currentStack.push(_id);
 }
 
 int Vertex::getId() const

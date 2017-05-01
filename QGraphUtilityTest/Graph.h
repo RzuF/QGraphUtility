@@ -100,7 +100,7 @@ public:
     void drawGraph(QLabel* label, int radius = 200) const;
 
     //ALgorith methos
-    void Kosaraju();
+    void Kosaraju(QLabel* label);
 
 
 signals:
