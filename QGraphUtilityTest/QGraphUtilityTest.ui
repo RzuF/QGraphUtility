@@ -111,7 +111,17 @@
     <item>
      <widget class="QLabel" name="graphShowLabel">
       <property name="text">
-       <string>TextLabel</string>
+       <string>First Graph</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="graphTransponedShowLabel">
+      <property name="text">
+       <string>Second Graph</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>

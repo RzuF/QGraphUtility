@@ -67,7 +67,7 @@ public:
 
     //Import methods
     bool importFromAdjacencyList(AdjacencyListType adjacencyList, bool digraph = false);
-    bool importFromAdjacencyMatrix(AdjacenecyMatrixType adjacencyMatrix);
+    bool importFromAdjacencyMatrix(AdjacenecyMatrixType adjacencyMatrix, bool digraph = false);
     bool importFromIncidenceMatrix(IncidenceMatrixType incidenceMatrix);
 
     //Export methods
@@ -98,6 +98,9 @@ public:
 
     //Drawing methods
     void drawGraph(QLabel* label, int radius = 200) const;
+
+    //ALgorith methos
+    void Kosaraju();
 
 
 signals:

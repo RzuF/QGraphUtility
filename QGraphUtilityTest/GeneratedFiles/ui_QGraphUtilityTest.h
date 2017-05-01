@@ -50,6 +50,7 @@ public:
     QComboBox *graphTypeComboBox;
     QPushButton *generateButton;
     QLabel *graphShowLabel;
+    QLabel *graphTransponedShowLabel;
     QMenuBar *menuBar;
     QMenu *menuTest;
     QToolBar *mainToolBar;
@@ -152,6 +153,12 @@ public:
 
         verticalLayout->addWidget(graphShowLabel);
 
+        graphTransponedShowLabel = new QLabel(centralWidget);
+        graphTransponedShowLabel->setObjectName(QStringLiteral("graphTransponedShowLabel"));
+        graphTransponedShowLabel->setAlignment(Qt::AlignCenter);
+
+        verticalLayout->addWidget(graphTransponedShowLabel);
+
         QGraphUtilityTestClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(QGraphUtilityTestClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -186,7 +193,8 @@ public:
          << QApplication::translate("QGraphUtilityTestClass", "Fixed Probability", Q_NULLPTR)
         );
         generateButton->setText(QApplication::translate("QGraphUtilityTestClass", "Generate new graph", Q_NULLPTR));
-        graphShowLabel->setText(QApplication::translate("QGraphUtilityTestClass", "TextLabel", Q_NULLPTR));
+        graphShowLabel->setText(QApplication::translate("QGraphUtilityTestClass", "First Graph", Q_NULLPTR));
+        graphTransponedShowLabel->setText(QApplication::translate("QGraphUtilityTestClass", "Second Graph", Q_NULLPTR));
         menuTest->setTitle(QApplication::translate("QGraphUtilityTestClass", "Test", Q_NULLPTR));
     } // retranslateUi
 

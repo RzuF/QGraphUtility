@@ -34,13 +34,45 @@ QList<Edge *> Vertex::getEdges() const
     return _edges;
 }
 
+QList<Vertex *> Vertex::getNeighbours() const
+{
+    return _neighbours;
+}
+
+void Vertex::addNeighbour(Vertex *newNeighbour)
+{
+    if(!_neighbours.contains(newNeighbour))
+        _neighbours.append(newNeighbour);
+}
+
 void Vertex::addEdge(Edge *newEdge)
 {
     if((newEdge->getStart() == this || newEdge->getEnd() == this) && !_edges.contains(newEdge))
         _edges.append(newEdge);
 }
 
+void Vertex::deleteNeighbour(Vertex *neighbour)
+{
+    if(_neighbours.contains(neighbour))
+        _neighbours.removeAll(neighbour);
+}
+
+void Vertex::Visit()
+{
+    _visited = true;
+}
+
+void Vertex::UnVisit()
+{
+    _visited = false;
+}
+
 int Vertex::getId() const
 {
     return _id;
+}
+
+bool Vertex::isVisited() const
+{
+    return _visited;
 }

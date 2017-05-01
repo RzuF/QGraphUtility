@@ -201,9 +201,9 @@ bool Graph::importFromAdjacencyList(Graph::AdjacencyListType adjacencyList, bool
     return true;
 }
 
-bool Graph::importFromAdjacencyMatrix(Graph::AdjacenecyMatrixType adjacencyMatrix)
+bool Graph::importFromAdjacencyMatrix(Graph::AdjacenecyMatrixType adjacencyMatrix, bool digraph)
 {
-    this->~Graph();
+    //this->~Graph();
 
     for(int i = 0; i < adjacencyMatrix.size(); i++)
     {
@@ -211,12 +211,19 @@ bool Graph::importFromAdjacencyMatrix(Graph::AdjacenecyMatrixType adjacencyMatri
     }
 
     bool isSymetric = true;
-    for(int i = 0; i < adjacencyMatrix.size(); i++)
+    if(!digraph)
     {
-        for(int j = i; j < adjacencyMatrix.size(); j++)
-            if(!(isSymetric = adjacencyMatrix[i][j] == adjacencyMatrix[j][i]))
+        for(int i = 0; i < adjacencyMatrix.size(); i++)
+        {
+            for(int j = i; j < adjacencyMatrix.size(); j++)
+                if(!(isSymetric = adjacencyMatrix[i][j] == adjacencyMatrix[j][i]))
+                    break;
+            if(!isSymetric)
                 break;
+        }
     }
+    else
+        isSymetric = false;
 
     if(isSymetric)
     {
@@ -224,7 +231,7 @@ bool Graph::importFromAdjacencyMatrix(Graph::AdjacenecyMatrixType adjacencyMatri
         {
             for(int j = i; j < adjacencyMatrix.size(); j++)
             {
-                if(adjacencyMatrix[i][j] > 0)
+                if(adjacencyMatrix[i][j] != 0)
                     addUniqueEdge(new Edge(this->operator [](i), this->operator [](j)));
             }
         }
@@ -235,8 +242,8 @@ bool Graph::importFromAdjacencyMatrix(Graph::AdjacenecyMatrixType adjacencyMatri
         {
             for(int j = 0; j < adjacencyMatrix.size(); j++)
             {
-                if(adjacencyMatrix[i][j] > 0)
-                    addUniqueEdge(new Edge(this->operator [](i), this->operator [](j), true));
+                if(adjacencyMatrix[i][j] != 0)
+                    addEdge(new Edge(this->operator [](i), this->operator [](j), true));
             }
         }
     }
@@ -295,16 +302,14 @@ Graph::AdjacencyListType Graph::exportToAdjacencyList() const
 Graph::AdjacenecyMatrixType Graph::exportToAdjacenecyMatrix() const
 {
     std::vector<std::vector<int>> adjacencyMatrix(_vertexList.size());
-    foreach (auto vertexVector, adjacencyMatrix)
-    {
-        std::vector<int> tmpVector(_vertexList.size(), 0);
-        vertexVector = tmpVector;
-    }
+    for(int i = 0; i < _vertexList.size(); i++)
+        adjacencyMatrix[i] = std::vector<int>(_vertexList.size(), 0);
 
     for(int i = 0; i < _edgeList.size(); i++)
     {
-        adjacencyMatrix[_edgeList[i]->getEnd()->getId()][_edgeList[i]->getStart()->getId()] = _edgeList[i]->getWeight();
-        adjacencyMatrix[_edgeList[i]->getStart()->getId()][_edgeList[i]->getEnd()->getId()] = _edgeList[i]->isOriented() ? 0 : _edgeList[i]->getWeight();
+        adjacencyMatrix[_edgeList[i]->getStart()->getId()][_edgeList[i]->getEnd()->getId()] = _edgeList[i]->getWeight();
+        if(!_edgeList[i]->isOriented())
+            adjacencyMatrix[_edgeList[i]->getEnd()->getId()][_edgeList[i]->getStart()->getId()] = _edgeList[i]->getWeight();
     }
 
     return adjacencyMatrix;
@@ -455,6 +460,29 @@ void Graph::drawGraph(QLabel* label, int radius) const
 
     label->setPicture(myPicture);
     label->show();
+}
+
+void Graph::Kosaraju()
+{
+    foreach (auto vertex, _vertexList)
+    {
+        vertex->UnVisit();
+    }
+
+    auto adjacencyMatrix = this->exportToAdjacenecyMatrix();
+    for(int i = 0; i < _vertexList.size(); i++)
+    {
+        for(int j = i+1; j < _vertexList.size(); j++)
+        {
+            int tmp = adjacencyMatrix[i][j];
+            adjacencyMatrix[i][j] = adjacencyMatrix[j][i];
+            adjacencyMatrix[j][i] = tmp;
+        }
+    }
+
+    Graph TransponatedGraph;
+    TransponatedGraph.importFromAdjacencyMatrix(adjacencyMatrix);
+
 }
 
 /**

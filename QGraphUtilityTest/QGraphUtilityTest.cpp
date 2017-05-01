@@ -10,6 +10,10 @@ QGraphUtilityTest::QGraphUtilityTest(QWidget *parent)
 	: QMainWindow(parent)
 {
     ui.setupUi(this);
+
+    ui.vertexSpinBox->setValue(5);
+    ui.probabilitySpinBox->setValue(0.5);
+    ui.graphTypeComboBox->setCurrentIndex(1);
 }
 
 void QGraphUtilityTest::on_generateButton_clicked()
@@ -31,7 +35,22 @@ void QGraphUtilityTest::on_generateButton_clicked()
             break;
         }
 
+        auto adjacencyMatrix = randomGraph->exportToAdjacenecyMatrix();
+        for(int i = 0; i < randomGraph->getVertexCount(); i++)
+        {
+            for(int j = i+1; j < randomGraph->getVertexCount(); j++)
+            {
+                int tmp = adjacencyMatrix[i][j];
+                adjacencyMatrix[i][j] = adjacencyMatrix[j][i];
+                adjacencyMatrix[j][i] = tmp;
+            }
+        }
+
+        QPointer<Graph> TransponatedGraph = new Graph;
+        TransponatedGraph->importFromAdjacencyMatrix(adjacencyMatrix, true);
+
         randomGraph->drawGraph(ui.graphShowLabel);
+        TransponatedGraph->drawGraph(ui.graphTransponedShowLabel);
     }
     catch(Graph::GraphException exception)
     {
