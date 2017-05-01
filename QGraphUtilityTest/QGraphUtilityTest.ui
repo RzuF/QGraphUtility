@@ -89,6 +89,11 @@
         </item>
         <item>
          <property name="text">
+          <string>Fixed Probability (Digraph)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>Fixed Probability</string>
          </property>
         </item>

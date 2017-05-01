@@ -101,6 +101,34 @@ Graph* Graph::generateRandomGraphFixedProbability(int n, double p)
     return newRandomGraph;
 }
 
+Graph *Graph::generateRandomDigraphFixedProbability(int n, double p)
+{
+    Graph* newRandomGraph = new Graph;
+    for(int i = 0; i < n; i++)
+    {
+        newRandomGraph->addVertex(new Vertex(i));
+    }
+
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < n; j++)
+        {
+            if(i==j)
+                continue;
+
+            auto startVertex = newRandomGraph->operator [](i);
+            auto endVertex = newRandomGraph->operator [](j);
+
+            double probablitity = static_cast<double>(qrand()) / RAND_MAX;
+
+            if(probablitity < p)
+                newRandomGraph->addEdge(new Edge(startVertex, endVertex, true));
+        }
+    }
+
+    return newRandomGraph;
+}
+
 Graph::Graph(QObject *parent) : QObject(parent)
 {
 
@@ -152,7 +180,7 @@ Graph::~Graph()
     _edgeList.clear();
 }
 
-bool Graph::importFromAdjacencyList(Graph::AdjacencyListType adjacencyList)
+bool Graph::importFromAdjacencyList(Graph::AdjacencyListType adjacencyList, bool digraph)
 {
     this->~Graph();
 
@@ -166,7 +194,7 @@ bool Graph::importFromAdjacencyList(Graph::AdjacencyListType adjacencyList)
     {
         for(int vertex : adjacencyList.at(i))
         {
-            addUniqueEdge(new Edge(this->operator [](i), this->operator [](vertex)));
+            addUniqueEdge(new Edge(this->operator [](i), this->operator [](vertex), digraph));
         }
     }
 
@@ -371,6 +399,9 @@ Graph* Graph::generateRandomGraph(int n, double l, Graph::RandomGraph method)
 
     if(method == Graph::RandomGraph::FixedProbability)
         return Graph::generateRandomGraphFixedProbability(n, l);
+
+    if(method == Graph::RandomGraph::DigraphFixedProbability)
+        return Graph::generateRandomDigraphFixedProbability(n, l);
 }
 
 void Graph::drawGraph(QLabel* label, int radius) const
@@ -381,6 +412,9 @@ void Graph::drawGraph(QLabel* label, int radius) const
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(QPen(Qt::black, 3, Qt::SolidLine, Qt::RoundCap));
     painter.setBrush(QBrush(Qt::white));
+    QFont font(painter.font());
+    font.setBold(true);
+    painter.setFont(font);
 
     double angleDelta = 2 * 3.14159265358979323846 / _vertexList.size();
 
@@ -397,15 +431,25 @@ void Graph::drawGraph(QLabel* label, int radius) const
     foreach (auto edge, _edgeList)
     {
         painter.drawLine(listOfPoints[edge->getStart()], listOfPoints[edge->getEnd()]);
+        if(edge->isOriented())
+        {
+            QLineF currentEdgeReversed(listOfPoints[edge->getEnd()], listOfPoints[edge->getStart()]);
+            QLineF wingLeft = QLineF::fromPolar(30, currentEdgeReversed.angle() + 15).translated(listOfPoints[edge->getEnd()]);
+            QLineF wingRight = QLineF::fromPolar(30, currentEdgeReversed.angle() - 15).translated(listOfPoints[edge->getEnd()]);
+            painter.drawLine(wingLeft);
+            painter.drawLine(wingRight);
+        }
     }
 
     foreach (auto vertex, _vertexList)
     {
-        painter.drawEllipse(listOfPoints[vertex], 15, 15);
-        painter.drawText(listOfPoints[vertex], QString::number(vertex->getId()));
+        double ellipseRadius = 15;
+        painter.drawEllipse(listOfPoints[vertex], ellipseRadius, ellipseRadius);
+        painter.drawText(QRectF(listOfPoints[vertex] - QPointF(ellipseRadius, ellipseRadius), 
+                                listOfPoints[vertex] + QPointF(ellipseRadius, ellipseRadius)),
+                         Qt::AlignVCenter | Qt::AlignHCenter, 
+                         QString::number(vertex->getId()));
     }
-
-    //painter.drawLine(0, 0, 200, 200);
 
     painter.end();
 

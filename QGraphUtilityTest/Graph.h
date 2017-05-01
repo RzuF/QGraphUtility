@@ -20,6 +20,7 @@ class Graph : public QObject
 
     static Graph* generateRandomGraphFixedEdges(int n, int l);
     static Graph* generateRandomGraphFixedProbability(int n, double p);
+    static Graph* generateRandomDigraphFixedProbability(int n, double p);
 
 public:
     class GraphException: public std::exception
@@ -45,7 +46,8 @@ public:
     enum RandomGraph
     {
         FixedEdges,
-        FixedProbability
+        FixedProbability,
+        DigraphFixedProbability
     };
 
     //Typedefs
@@ -64,7 +66,7 @@ public:
     ~Graph();
 
     //Import methods
-    bool importFromAdjacencyList(AdjacencyListType adjacencyList);
+    bool importFromAdjacencyList(AdjacencyListType adjacencyList, bool digraph = false);
     bool importFromAdjacencyMatrix(AdjacenecyMatrixType adjacencyMatrix);
     bool importFromIncidenceMatrix(IncidenceMatrixType incidenceMatrix);
 

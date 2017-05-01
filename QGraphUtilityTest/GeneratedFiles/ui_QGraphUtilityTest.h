@@ -182,6 +182,7 @@ public:
         graphTypeComboBox->clear();
         graphTypeComboBox->insertItems(0, QStringList()
          << QApplication::translate("QGraphUtilityTestClass", "Fixed Edges", Q_NULLPTR)
+         << QApplication::translate("QGraphUtilityTestClass", "Fixed Probability (Digraph)", Q_NULLPTR)
          << QApplication::translate("QGraphUtilityTestClass", "Fixed Probability", Q_NULLPTR)
         );
         generateButton->setText(QApplication::translate("QGraphUtilityTestClass", "Generate new graph", Q_NULLPTR));
