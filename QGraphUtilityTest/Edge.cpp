@@ -79,3 +79,8 @@ bool Edge::setEnd(Vertex *end)
 
     return true;
 }
+
+void Edge::setWeight(int weight)
+{
+    _weight = weight;
+}

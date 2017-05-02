@@ -84,6 +84,7 @@ public:
 
     //State announcers
     bool isVertexesConnected(Vertex* start, Vertex* end, bool oriented = false);
+    bool isWeighted() const;
 
     //Getters
     int getVertexCount() const;
@@ -97,10 +98,11 @@ public:
     static Graph* generateRandomGraph(int n, double l, RandomGraph method);
 
     //Drawing methods
-    void drawGraph(QLabel* label, int radius = 200) const;
+    void drawGraph(QLabel* label, bool colorize = false, int radius = 200) const;
 
-    //ALgorith methos
-    void Kosaraju(QLabel* label);
+    //Algorith methos
+    int Kosaraju(QLabel* label);
+    bool BellmanFord(QLabel* label, int startVertex = 0);
 
 
 signals:

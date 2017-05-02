@@ -13,7 +13,7 @@ QGraphUtilityTest::QGraphUtilityTest(QWidget *parent)
 
     ui.vertexSpinBox->setValue(5);
     ui.probabilitySpinBox->setValue(0.5);
-    ui.graphTypeComboBox->setCurrentIndex(1);
+    ui.graphTypeComboBox->setCurrentIndex(2);
 }
 
 void QGraphUtilityTest::on_generateButton_clicked()
@@ -31,8 +31,37 @@ void QGraphUtilityTest::on_generateButton_clicked()
             randomGraph = Graph::generateRandomGraph(ui.vertexSpinBox->value(), ui.probabilitySpinBox->value(), Graph::RandomGraph::DigraphFixedProbability);
             break;
         case 2:
+            if(ui.probabilitySpinBox->value() < 0.4f)
+                ui.probabilitySpinBox->setValue(0.5f);
+            while((randomGraph = Graph::generateRandomGraph(ui.vertexSpinBox->value(), ui.probabilitySpinBox->value(), Graph::RandomGraph::DigraphFixedProbability))->Kosaraju(ui.additionalInfoLabel) != ui.vertexSpinBox->value())
+            {
+                delete randomGraph;
+            }
+            break;
+        case 3:
             randomGraph = Graph::generateRandomGraph(ui.vertexSpinBox->value(), ui.probabilitySpinBox->value(), Graph::RandomGraph::FixedProbability);
             break;
+        }
+
+        if(ui.graphTypeComboBox->currentIndex() == 2 && ui.bellmanFordRadio->isChecked())
+        {
+            for(int i = 0; i < randomGraph->getEdgeCount(); i++)
+                randomGraph->getEdge(i)->setWeight(qrand() % 15 - 5);
+
+            if(ui.negativeCyclesCheckBox->isChecked())
+                while(!randomGraph->BellmanFord(ui.additionalInfoLabel, ui.bellmanFordSpinBox->value()))
+                {
+                    delete randomGraph;
+                    while((randomGraph = Graph::generateRandomGraph(ui.vertexSpinBox->value(), ui.probabilitySpinBox->value(), Graph::RandomGraph::DigraphFixedProbability))->Kosaraju(ui.additionalInfoLabel) != ui.vertexSpinBox->value())
+                    {
+                        delete randomGraph;
+                    }
+
+                    for(int i = 0; i < randomGraph->getEdgeCount(); i++)
+                        randomGraph->getEdge(i)->setWeight(qrand() % 15 - 5);
+                }
+            else
+                randomGraph->BellmanFord(ui.additionalInfoLabel, ui.bellmanFordSpinBox->value());
         }
 
         if(ui.graphTypeComboBox->currentIndex() == 1 && ui.transponeGraphRadio->isChecked())
@@ -59,7 +88,7 @@ void QGraphUtilityTest::on_generateButton_clicked()
             randomGraph->Kosaraju(ui.additionalInfoLabel);
         }
 
-        randomGraph->drawGraph(ui.graphShowLabel);                
+        randomGraph->drawGraph(ui.graphShowLabel, ui.colorizeCheckBox->isChecked());
     }
     catch(Graph::GraphException exception)
     {
@@ -70,4 +99,5 @@ void QGraphUtilityTest::on_generateButton_clicked()
 void QGraphUtilityTest::on_vertexSpinBox_valueChanged(int arg1)
 {
     ui.edgeSpinBox->setMaximum(arg1*(arg1-1)/2);
+    ui.bellmanFordSpinBox->setMaximum(arg1-1);
 }

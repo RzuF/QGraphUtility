@@ -412,13 +412,14 @@ Graph* Graph::generateRandomGraph(int n, double l, Graph::RandomGraph method)
         return Graph::generateRandomDigraphFixedProbability(n, l);
 }
 
-void Graph::drawGraph(QLabel* label, int radius) const
+void Graph::drawGraph(QLabel* label, bool colorize, int radius) const
 {
     QPicture myPicture;
     QPainter painter(&myPicture);
+    QBrush brush(Qt::black);
 
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(QPen(Qt::black, 3, Qt::SolidLine, Qt::RoundCap));
+    painter.setPen(QPen(brush, 3, Qt::SolidLine, Qt::RoundCap));
     painter.setBrush(QBrush(Qt::white));
     QFont font(painter.font());
     font.setBold(true);
@@ -436,18 +437,39 @@ void Graph::drawGraph(QLabel* label, int radius) const
         listOfPoints.insert(this->_vertexList.at(i), QPointF(radius + radius*cos(i*angleDelta), radius + radius*sin(i*angleDelta)));
     }
 
+    bool drawWeights = isWeighted();
+    int color = 2;
+
     foreach (auto edge, _edgeList)
     {
+        if(colorize)
+        {
+            color++;
+            brush.setColor(static_cast<Qt::GlobalColor>(color % 17 + 2));
+            painter.setBrush(brush);
+            painter.setPen(QPen(brush, 3, Qt::SolidLine, Qt::RoundCap));
+        }
         painter.drawLine(listOfPoints[edge->getStart()], listOfPoints[edge->getEnd()]);
         if(edge->isOriented())
         {
             QLineF currentEdgeReversed(listOfPoints[edge->getEnd()], listOfPoints[edge->getStart()]);
-            QLineF wingLeft = QLineF::fromPolar(30, currentEdgeReversed.angle() + 15).translated(listOfPoints[edge->getEnd()]);
-            QLineF wingRight = QLineF::fromPolar(30, currentEdgeReversed.angle() - 15).translated(listOfPoints[edge->getEnd()]);
-            painter.drawLine(wingLeft);
-            painter.drawLine(wingRight);
+            QLineF wingLeft = QLineF::fromPolar(30, currentEdgeReversed.angle() + 10).translated(listOfPoints[edge->getEnd()]);
+            QLineF wingRight = QLineF::fromPolar(30, currentEdgeReversed.angle() - 10).translated(listOfPoints[edge->getEnd()]);
+            QPointF arrow[3] = {wingLeft.p2(), wingRight.p2(), currentEdgeReversed.p1()};
+            painter.drawPolygon(arrow, 3);
         }
+        if(drawWeights)
+        {
+            QLineF currentEdgeReversed(listOfPoints[edge->getEnd()], listOfPoints[edge->getStart()]);
+            QLineF textLine = QLineF::fromPolar(15, currentEdgeReversed.angle() + 90).translated(listOfPoints[edge->getStart()] + (listOfPoints[edge->getEnd()] - listOfPoints[edge->getStart()])/2);
+
+            painter.drawText(textLine.p2(), QString::number(edge->getWeight()));
+        }
+
     }
+
+    painter.setBrush(QBrush(Qt::white));
+    painter.setPen(QPen(Qt::black, 3, Qt::SolidLine, Qt::RoundCap));
 
     foreach (auto vertex, _vertexList)
     {
@@ -465,7 +487,7 @@ void Graph::drawGraph(QLabel* label, int radius) const
     label->show();
 }
 
-void Graph::Kosaraju(QLabel* label)
+int Graph::Kosaraju(QLabel* label)
 {
     foreach (auto vertex, _vertexList)
     {
@@ -497,6 +519,7 @@ void Graph::Kosaraju(QLabel* label)
     TransponatedGraph.importFromAdjacencyMatrix(adjacencyMatrix, true);
 
     int StrongConnectedComponentCounter = 0;
+    int maxSCC = 0;
 
     while(!Stack.empty())
     {
@@ -510,6 +533,9 @@ void Graph::Kosaraju(QLabel* label)
 
         TransponatedGraph[currentId]->DFS(currentMembersOfSCC, true);
 
+        if(currentMembersOfSCC.size() > maxSCC)
+            maxSCC = currentMembersOfSCC.size();
+
         output.append(QString::number(StrongConnectedComponentCounter)).append(" : ");
         while(!currentMembersOfSCC.empty())
         {
@@ -521,6 +547,71 @@ void Graph::Kosaraju(QLabel* label)
     }
 
     label->setText(output);
+
+    return maxSCC;
+}
+
+bool Graph::BellmanFord(QLabel *label, int startVertex)
+{
+    std::vector<int> distance(_vertexList.size(), _edgeList.size() * 100);
+    std::vector<int> predecessor(_vertexList.size(), -1);
+    distance[startVertex] = 0;
+
+    for(int i = 1; i < _vertexList.size(); i++)
+    {
+        bool NoChange = true;
+
+        for(int j = 0; j < _vertexList.size(); j++)
+        {
+            foreach(auto edge, _vertexList[j]->getEdges())
+            {
+                if(edge->getStart() != _vertexList[j])
+                    continue;
+                if(distance[edge->getEnd()->getId()] > distance[j] + edge->getWeight())
+                {
+                    NoChange = false;
+                    distance[edge->getEnd()->getId()] = distance[j] + edge->getWeight();
+                    predecessor[edge->getEnd()->getId()] = j;
+                }
+            }
+        }
+        if(NoChange)
+            break;
+    }
+
+    bool negativeCycle = false;
+    for(int j = 0; j < _vertexList.size(); j++)
+    {
+        foreach(auto edge, _vertexList[j]->getEdges())
+        {
+            if(edge->getStart() != _vertexList[j])
+                continue;
+            if(distance[edge->getEnd()->getId()] > distance[j] + edge->getWeight())
+            {
+                negativeCycle = true;
+                break;
+            }
+        }
+        if(negativeCycle)
+            break;
+    }
+
+    if(negativeCycle)
+    {
+        label->setText("Negative cycle occured!");
+    }
+    else
+    {
+        QString output = "Results of Bellman-Ford algorithm:\n\n";
+        for(int i = 0; i < distance.size(); i++)
+        {
+            output.append("Vertex ").append(QString::number(i)).append(" distance: ").append(QString::number(distance[i])).append("; predecessor: ").append(QString::number(predecessor[i])).append("\n");
+        }
+
+        label->setText(output);
+    }
+
+    return !negativeCycle;
 }
 
 /**
@@ -574,6 +665,15 @@ bool Graph::isVertexesConnected(Vertex *start, Vertex *end, bool oriented)
         if(!oriented && edge->getStart() == end && edge->getEnd() == start)
             return true;
     }
+
+    return false;
+}
+
+bool Graph::isWeighted() const
+{
+    foreach(auto edge, _edgeList)
+        if(edge->getWeight() != 1)
+            return true;
 
     return false;
 }

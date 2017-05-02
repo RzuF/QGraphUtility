@@ -27,4 +27,6 @@ public:
 
     bool setStart(Vertex* start);
     bool setEnd(Vertex* end);
+
+    void setWeight(int weight);
 };

@@ -13,8 +13,10 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -52,6 +54,15 @@ public:
     QHBoxLayout *horizontalLayout_4;
     QRadioButton *transponeGraphRadio;
     QRadioButton *kosarajuRadio;
+    QRadioButton *bellmanFordRadio;
+    QHBoxLayout *horizontalLayout_7;
+    QCheckBox *colorizeCheckBox;
+    QGroupBox *groupBox;
+    QHBoxLayout *horizontalLayout_10;
+    QHBoxLayout *horizontalLayout_8;
+    QCheckBox *negativeCyclesCheckBox;
+    QLabel *label_4;
+    QSpinBox *bellmanFordSpinBox;
     QPushButton *generateButton;
     QLabel *graphShowLabel;
     QLabel *additionalInfoLabel;
@@ -159,8 +170,56 @@ public:
 
         horizontalLayout_4->addWidget(kosarajuRadio);
 
+        bellmanFordRadio = new QRadioButton(centralWidget);
+        bellmanFordRadio->setObjectName(QStringLiteral("bellmanFordRadio"));
+
+        horizontalLayout_4->addWidget(bellmanFordRadio);
+
 
         verticalLayout->addLayout(horizontalLayout_4);
+
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setSpacing(6);
+        horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
+        colorizeCheckBox = new QCheckBox(centralWidget);
+        colorizeCheckBox->setObjectName(QStringLiteral("colorizeCheckBox"));
+        colorizeCheckBox->setChecked(true);
+
+        horizontalLayout_7->addWidget(colorizeCheckBox);
+
+        groupBox = new QGroupBox(centralWidget);
+        groupBox->setObjectName(QStringLiteral("groupBox"));
+        groupBox->setAutoFillBackground(false);
+        horizontalLayout_10 = new QHBoxLayout(groupBox);
+        horizontalLayout_10->setSpacing(6);
+        horizontalLayout_10->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_10->setObjectName(QStringLiteral("horizontalLayout_10"));
+        horizontalLayout_8 = new QHBoxLayout();
+        horizontalLayout_8->setSpacing(6);
+        horizontalLayout_8->setObjectName(QStringLiteral("horizontalLayout_8"));
+        negativeCyclesCheckBox = new QCheckBox(groupBox);
+        negativeCyclesCheckBox->setObjectName(QStringLiteral("negativeCyclesCheckBox"));
+
+        horizontalLayout_8->addWidget(negativeCyclesCheckBox);
+
+        label_4 = new QLabel(groupBox);
+        label_4->setObjectName(QStringLiteral("label_4"));
+
+        horizontalLayout_8->addWidget(label_4);
+
+        bellmanFordSpinBox = new QSpinBox(groupBox);
+        bellmanFordSpinBox->setObjectName(QStringLiteral("bellmanFordSpinBox"));
+
+        horizontalLayout_8->addWidget(bellmanFordSpinBox);
+
+
+        horizontalLayout_10->addLayout(horizontalLayout_8);
+
+
+        horizontalLayout_7->addWidget(groupBox);
+
+
+        verticalLayout->addLayout(horizontalLayout_7);
 
         generateButton = new QPushButton(centralWidget);
         generateButton->setObjectName(QStringLiteral("generateButton"));
@@ -210,10 +269,16 @@ public:
         graphTypeComboBox->insertItems(0, QStringList()
          << QApplication::translate("QGraphUtilityTestClass", "Fixed Edges", Q_NULLPTR)
          << QApplication::translate("QGraphUtilityTestClass", "Fixed Probability (Digraph)", Q_NULLPTR)
+         << QApplication::translate("QGraphUtilityTestClass", "Strong Connected Digraph", Q_NULLPTR)
          << QApplication::translate("QGraphUtilityTestClass", "Fixed Probability", Q_NULLPTR)
         );
         transponeGraphRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Transponed Graph", Q_NULLPTR));
         kosarajuRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Kosaraju", Q_NULLPTR));
+        bellmanFordRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Bellman-Ford", Q_NULLPTR));
+        colorizeCheckBox->setText(QApplication::translate("QGraphUtilityTestClass", "Colorise", Q_NULLPTR));
+        groupBox->setTitle(QApplication::translate("QGraphUtilityTestClass", "Bellman-Ford", Q_NULLPTR));
+        negativeCyclesCheckBox->setText(QApplication::translate("QGraphUtilityTestClass", "Avoid Negative Cycles", Q_NULLPTR));
+        label_4->setText(QApplication::translate("QGraphUtilityTestClass", "Start Vertex", Q_NULLPTR));
         generateButton->setText(QApplication::translate("QGraphUtilityTestClass", "Generate new graph", Q_NULLPTR));
         graphShowLabel->setText(QApplication::translate("QGraphUtilityTestClass", "First Graph", Q_NULLPTR));
         additionalInfoLabel->setText(QString());
