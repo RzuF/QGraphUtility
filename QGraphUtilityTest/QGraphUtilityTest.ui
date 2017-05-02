@@ -123,6 +123,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QRadioButton" name="distanceMatrixRadio">
+        <property name="text">
+         <string>Distance Matrix</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QRadioButton" name="kosarajuRadio">
         <property name="text">
          <string>Kosaraju</string>

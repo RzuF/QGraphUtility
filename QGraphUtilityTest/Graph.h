@@ -89,6 +89,7 @@ public:
     //State announcers
     bool isVertexesConnected(Vertex* start, Vertex* end, bool oriented = false);
     bool isWeighted() const;
+    bool isConnected() const;
 
     //Getters
     int getVertexCount() const;
@@ -109,6 +110,7 @@ public:
     std::vector<int> Dijkstra(QLabel* label, int startVertex = 0);
     std::vector<int> BellmanFord(QLabel* label, int startVertex = 0);
     bool Johnson(QLabel* label, bool original = false);
+    bool DistanceMatrix(QLabel* label);
 
 
 signals:

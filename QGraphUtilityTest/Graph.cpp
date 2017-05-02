@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <ctime>
 #include <stack>
+#include <climits>
 #include <QPointer>
 
 Graph::GraphException Graph::VertexAlreadyInGraph("Vertex already in Graph object");
@@ -247,7 +248,7 @@ bool Graph::importFromAdjacencyMatrix(Graph::AdjacenecyMatrixType adjacencyMatri
             for(int j = 0; j < adjacencyMatrix.size(); j++)
             {
                 if(adjacencyMatrix[i][j] != 0)
-                    addEdge(new Edge(this->operator [](i), this->operator [](j), true));
+                    addEdge(new Edge(this->operator [](i), this->operator [](j), adjacencyMatrix[i][j], true));
             }
         }
     }
@@ -718,6 +719,60 @@ bool Graph::Johnson(QLabel *label, bool original)
     return true;
 }
 
+bool Graph::DistanceMatrix(QLabel *label)
+{
+    QPointer<Graph> currentGraph = this;
+
+    std::vector<std::vector<int>> distanceMatrix;
+    int centerVertexIndex = -1, minmaxVertexIndex = -1;
+    int centerVertexValue = INT_MAX, minmaxVertexValue = INT_MAX;
+
+    QString output = "Distance Matrix of Dijkstra algorithm:\n\n";
+
+    for(int i = 0; i < currentGraph->getVertexCount(); i++)
+    {
+        auto distance = currentGraph->Dijkstra(0, i);
+        distanceMatrix.push_back(distance);
+        int currentDistanceValue = 0;
+        int currentMaxDistanceValue = distance[0];
+
+        output.append(QString::number(i)).append(" | ");
+
+        for(int j = 0; j < distance.size(); j++)
+        {
+            currentDistanceValue += distance[j];
+            if(currentMaxDistanceValue < distance[j])
+                currentMaxDistanceValue = distance[j];
+
+            output.append(QString::number(distance[j])).append(" ");
+        }
+        //Bottom line for debug purposes!
+        //output.append("= ").append(QString::number(currentDistanceValue)).append(" | ").append(QString::number(currentMaxDistanceValue));
+        //*******************************
+
+        output.append("\n");
+
+        if(centerVertexValue > currentDistanceValue)
+        {
+            centerVertexValue = currentDistanceValue;
+            centerVertexIndex = i;
+        }
+
+        if(minmaxVertexValue > currentMaxDistanceValue)
+        {
+            minmaxVertexValue = currentMaxDistanceValue;
+            minmaxVertexIndex = i;
+        }
+    }
+
+    output.append("\nCenter vertex: ").append(QString::number(centerVertexIndex)).append("\nMinmax center vertex: ").append(QString::number(minmaxVertexIndex));
+
+    if(label != 0)
+        label->setText(output);
+
+    return true;
+}
+
 /**
  * @brief Add Edge* to Graph object and returns bool true adding was successful
  * @param newEdge Pointer to Edge object
@@ -817,4 +872,15 @@ bool Graph::isWeighted() const
             return true;
 
     return false;
+}
+
+bool Graph::isConnected() const
+{
+    foreach (auto vertex, _vertexList)
+    {
+        if(vertex->getEdges().size() < 1)
+            return false;
+    }
+
+    return true;
 }

@@ -43,6 +43,36 @@ void QGraphUtilityTest::on_generateButton_clicked()
             break;
         }
 
+        if(ui.graphTypeComboBox->currentIndex() == 3 && ui.dijkstraRadio->isChecked())
+        {
+            while(!(randomGraph = Graph::generateRandomGraph(ui.vertexSpinBox->value(), ui.probabilitySpinBox->value(), Graph::RandomGraph::FixedProbability))->isConnected())
+            {
+                delete randomGraph;
+            }
+
+            randomGraph->setRandomWeights(1, 10);
+
+            QPointer<Graph> tmpGraph = new Graph;
+            tmpGraph->importFromAdjacencyMatrix(randomGraph->exportToAdjacenecyMatrix(), true);
+
+            tmpGraph->Dijkstra(ui.additionalInfoLabel, ui.bellmanFordSpinBox->value());
+        }
+
+        if(ui.graphTypeComboBox->currentIndex() == 3 && ui.distanceMatrixRadio->isChecked())
+        {
+            while(!(randomGraph = Graph::generateRandomGraph(ui.vertexSpinBox->value(), ui.probabilitySpinBox->value(), Graph::RandomGraph::FixedProbability))->isConnected())
+            {
+                delete randomGraph;
+            }
+
+            randomGraph->setRandomWeights(1, 10);
+
+            QPointer<Graph> tmpGraph = new Graph;
+            tmpGraph->importFromAdjacencyMatrix(randomGraph->exportToAdjacenecyMatrix(), true);
+
+            tmpGraph->DistanceMatrix(ui.additionalInfoLabel);
+        }
+
         if(ui.graphTypeComboBox->currentIndex() == 2 && ui.dijkstraRadio->isChecked())
         {
             randomGraph->setRandomWeights(0, 10);
@@ -102,7 +132,7 @@ void QGraphUtilityTest::on_generateButton_clicked()
             QPointer<Graph> TransponatedGraph = new Graph;
             TransponatedGraph->importFromAdjacencyMatrix(adjacencyMatrix, true);
 
-            TransponatedGraph->drawGraph(ui.additionalInfoLabel);
+            TransponatedGraph->drawGraph(ui.additionalInfoLabel, ui.colorizeCheckBox->isChecked());
         }
 
         if(ui.graphTypeComboBox->currentIndex() == 1 && ui.kosarajuRadio->isChecked())
