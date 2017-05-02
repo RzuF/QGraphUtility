@@ -656,6 +656,12 @@ bool Graph::addUniqueEdge(Edge *newEdge)
     return success;
 }
 
+void Graph::setRandomWeights(int start, int end)
+{
+    for(int i = 0; i < _edgeList.size(); i++)
+        _edgeList[i]->setWeight(qrand() % (end - start) + start);
+}
+
 bool Graph::isVertexesConnected(Vertex *start, Vertex *end, bool oriented)
 {
     foreach (auto edge, _edgeList)

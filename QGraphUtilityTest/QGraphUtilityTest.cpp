@@ -45,8 +45,7 @@ void QGraphUtilityTest::on_generateButton_clicked()
 
         if(ui.graphTypeComboBox->currentIndex() == 2 && ui.bellmanFordRadio->isChecked())
         {
-            for(int i = 0; i < randomGraph->getEdgeCount(); i++)
-                randomGraph->getEdge(i)->setWeight(qrand() % 15 - 5);
+            randomGraph->setRandomWeights(-5, 10);
 
             if(ui.negativeCyclesCheckBox->isChecked())
                 while(!randomGraph->BellmanFord(ui.additionalInfoLabel, ui.bellmanFordSpinBox->value()))
@@ -56,9 +55,7 @@ void QGraphUtilityTest::on_generateButton_clicked()
                     {
                         delete randomGraph;
                     }
-
-                    for(int i = 0; i < randomGraph->getEdgeCount(); i++)
-                        randomGraph->getEdge(i)->setWeight(qrand() % 15 - 5);
+                    randomGraph->setRandomWeights(-5, 10);
                 }
             else
                 randomGraph->BellmanFord(ui.additionalInfoLabel, ui.bellmanFordSpinBox->value());

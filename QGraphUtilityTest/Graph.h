@@ -82,6 +82,8 @@ public:
     bool addEdge(Edge* newEdge, bool force = true);
     bool addUniqueEdge(Edge* newEdge);
 
+    void setRandomWeights(int start, int end);
+
     //State announcers
     bool isVertexesConnected(Vertex* start, Vertex* end, bool oriented = false);
     bool isWeighted() const;
