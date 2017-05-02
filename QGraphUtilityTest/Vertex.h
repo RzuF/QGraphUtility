@@ -28,6 +28,7 @@ public:
     void addNeighbour(Vertex* newNeighbour);
     void addEdge(Edge* newEdge);
     void deleteNeighbour(Vertex* neighbour);
+    void clearEdgeList();
 
     void Visit();
     void UnVisit();

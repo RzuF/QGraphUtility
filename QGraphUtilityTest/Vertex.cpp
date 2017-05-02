@@ -17,16 +17,20 @@ Vertex::Vertex(int id, Edge* edge, QString name) : _id(id), _name(name), _visite
 Vertex::~Vertex()
 {
     foreach (auto edge, _edges)
-	{
-		edge->getStart()->_edges.removeOne(edge);
-		edge->getEnd()->_edges.removeOne(edge);
-
+	{        
         if(edge != nullptr)
         {
+            if(edge->getStart() != nullptr && !edge->getStart()->_edges.empty())
+                edge->getStart()->_edges.removeOne(edge);
+            if(edge->getEnd() != nullptr && !edge->getEnd()->_edges.empty())
+                edge->getEnd()->_edges.removeOne(edge);
+
             delete edge;
             edge = nullptr;
         }
     }
+
+    _edges.clear();
 }
 
 QList<Edge *> Vertex::getEdges() const
@@ -55,6 +59,11 @@ void Vertex::deleteNeighbour(Vertex *neighbour)
 {
     if(_neighbours.contains(neighbour))
         _neighbours.removeAll(neighbour);
+}
+
+void Vertex::clearEdgeList()
+{
+    _edges.clear();
 }
 
 void Vertex::Visit()

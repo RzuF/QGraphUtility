@@ -53,10 +53,15 @@ public:
     QComboBox *graphTypeComboBox;
     QHBoxLayout *horizontalLayout_4;
     QRadioButton *transponeGraphRadio;
+    QRadioButton *dijkstraRadio;
     QRadioButton *kosarajuRadio;
     QRadioButton *bellmanFordRadio;
+    QRadioButton *johnsonRadio;
     QHBoxLayout *horizontalLayout_7;
     QCheckBox *colorizeCheckBox;
+    QGroupBox *groupBox_2;
+    QHBoxLayout *horizontalLayout_9;
+    QCheckBox *originalGraphCheckBox;
     QGroupBox *groupBox;
     QHBoxLayout *horizontalLayout_10;
     QHBoxLayout *horizontalLayout_8;
@@ -165,6 +170,11 @@ public:
 
         horizontalLayout_4->addWidget(transponeGraphRadio);
 
+        dijkstraRadio = new QRadioButton(centralWidget);
+        dijkstraRadio->setObjectName(QStringLiteral("dijkstraRadio"));
+
+        horizontalLayout_4->addWidget(dijkstraRadio);
+
         kosarajuRadio = new QRadioButton(centralWidget);
         kosarajuRadio->setObjectName(QStringLiteral("kosarajuRadio"));
 
@@ -174,6 +184,12 @@ public:
         bellmanFordRadio->setObjectName(QStringLiteral("bellmanFordRadio"));
 
         horizontalLayout_4->addWidget(bellmanFordRadio);
+
+        johnsonRadio = new QRadioButton(centralWidget);
+        johnsonRadio->setObjectName(QStringLiteral("johnsonRadio"));
+        johnsonRadio->setContextMenuPolicy(Qt::PreventContextMenu);
+
+        horizontalLayout_4->addWidget(johnsonRadio);
 
 
         verticalLayout->addLayout(horizontalLayout_4);
@@ -186,6 +202,20 @@ public:
         colorizeCheckBox->setChecked(true);
 
         horizontalLayout_7->addWidget(colorizeCheckBox);
+
+        groupBox_2 = new QGroupBox(centralWidget);
+        groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
+        horizontalLayout_9 = new QHBoxLayout(groupBox_2);
+        horizontalLayout_9->setSpacing(6);
+        horizontalLayout_9->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_9->setObjectName(QStringLiteral("horizontalLayout_9"));
+        originalGraphCheckBox = new QCheckBox(groupBox_2);
+        originalGraphCheckBox->setObjectName(QStringLiteral("originalGraphCheckBox"));
+
+        horizontalLayout_9->addWidget(originalGraphCheckBox);
+
+
+        horizontalLayout_7->addWidget(groupBox_2);
 
         groupBox = new QGroupBox(centralWidget);
         groupBox->setObjectName(QStringLiteral("groupBox"));
@@ -273,9 +303,13 @@ public:
          << QApplication::translate("QGraphUtilityTestClass", "Fixed Probability", Q_NULLPTR)
         );
         transponeGraphRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Transponed Graph", Q_NULLPTR));
+        dijkstraRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Dijkstra", Q_NULLPTR));
         kosarajuRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Kosaraju", Q_NULLPTR));
         bellmanFordRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Bellman-Ford", Q_NULLPTR));
+        johnsonRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Johnson", Q_NULLPTR));
         colorizeCheckBox->setText(QApplication::translate("QGraphUtilityTestClass", "Colorise", Q_NULLPTR));
+        groupBox_2->setTitle(QApplication::translate("QGraphUtilityTestClass", "Johnson", Q_NULLPTR));
+        originalGraphCheckBox->setText(QApplication::translate("QGraphUtilityTestClass", "Original Graph", Q_NULLPTR));
         groupBox->setTitle(QApplication::translate("QGraphUtilityTestClass", "Bellman-Ford", Q_NULLPTR));
         negativeCyclesCheckBox->setText(QApplication::translate("QGraphUtilityTestClass", "Avoid Negative Cycles", Q_NULLPTR));
         label_4->setText(QApplication::translate("QGraphUtilityTestClass", "Start Vertex", Q_NULLPTR));

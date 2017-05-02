@@ -81,6 +81,8 @@ public:
     int addVertex(Vertex* newVertex, bool force = true);
     bool addEdge(Edge* newEdge, bool force = true);
     bool addUniqueEdge(Edge* newEdge);
+    bool removeVertex(Vertex* vertex);
+    bool removeEdge(Edge* edge);
 
     void setRandomWeights(int start, int end);
 
@@ -104,7 +106,9 @@ public:
 
     //Algorith methos
     int Kosaraju(QLabel* label);
-    bool BellmanFord(QLabel* label, int startVertex = 0);
+    std::vector<int> Dijkstra(QLabel* label, int startVertex = 0);
+    std::vector<int> BellmanFord(QLabel* label, int startVertex = 0);
+    bool Johnson(QLabel* label, bool original = false);
 
 
 signals:

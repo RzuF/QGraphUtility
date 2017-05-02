@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <ctime>
 #include <stack>
+#include <QPointer>
 
 Graph::GraphException Graph::VertexAlreadyInGraph("Vertex already in Graph object");
 Graph::GraphException Graph::VertexNumberCannotBeOneOrLess("Vertex number of random Graph object cannot be one or less");
@@ -179,8 +180,8 @@ Graph::~Graph()
         }
     }
 
-    _vertexList.clear();
-    _edgeList.clear();
+    //_vertexList.clear();
+    //_edgeList.clear();
 }
 
 bool Graph::importFromAdjacencyList(Graph::AdjacencyListType adjacencyList, bool digraph)
@@ -551,7 +552,55 @@ int Graph::Kosaraju(QLabel* label)
     return maxSCC;
 }
 
-bool Graph::BellmanFord(QLabel *label, int startVertex)
+std::vector<int> Graph::Dijkstra(QLabel *label, int startVertex)
+{
+    QList<Vertex*> unvisited =_vertexList;
+
+    std::vector<int> distance(_vertexList.size(), _edgeList.size() * 100);
+    std::vector<int> predecessor(_vertexList.size(), -1);
+    distance[startVertex] = 0;
+
+    while(!unvisited.empty())
+    {
+        Vertex* minDistanceVertex = unvisited[0];
+        foreach (auto vertex, unvisited)
+        {
+            if(distance[minDistanceVertex->getId()] > distance[vertex->getId()])
+                minDistanceVertex = vertex;
+        }
+
+        unvisited.removeOne(minDistanceVertex);
+
+        foreach (auto edge, minDistanceVertex->getEdges())
+        {
+            if(edge->getStart() != _vertexList[minDistanceVertex->getId()])
+                continue;
+
+            if(!unvisited.contains(edge->getEnd()))
+                continue;
+
+            if(distance[edge->getEnd()->getId()] > distance[edge->getStart()->getId()] + edge->getWeight())
+            {
+                distance[edge->getEnd()->getId()] = distance[edge->getStart()->getId()] + edge->getWeight();
+                predecessor[edge->getEnd()->getId()] = edge->getStart()->getId();
+            }
+        }
+    }
+
+
+    QString output = "Results of Dijkstra algorithm:\n\n";
+    for(int i = 0; i < distance.size(); i++)
+    {
+        output.append("Vertex ").append(QString::number(i)).append(" distance: ").append(QString::number(distance[i])).append("; predecessor: ").append(QString::number(predecessor[i])).append("\n");
+    }
+
+    if(label != 0)
+        label->setText(output);
+
+    return distance;
+}
+
+std::vector<int> Graph::BellmanFord(QLabel *label, int startVertex)
 {
     std::vector<int> distance(_vertexList.size(), _edgeList.size() * 100);
     std::vector<int> predecessor(_vertexList.size(), -1);
@@ -598,7 +647,9 @@ bool Graph::BellmanFord(QLabel *label, int startVertex)
 
     if(negativeCycle)
     {
-        label->setText("Negative cycle occured!");
+        if(label != 0)
+            label->setText("Negative cycle occured!");
+        distance.clear();
     }
     else
     {
@@ -608,10 +659,63 @@ bool Graph::BellmanFord(QLabel *label, int startVertex)
             output.append("Vertex ").append(QString::number(i)).append(" distance: ").append(QString::number(distance[i])).append("; predecessor: ").append(QString::number(predecessor[i])).append("\n");
         }
 
-        label->setText(output);
+        if(label != 0)
+            label->setText(output);
     }
 
-    return !negativeCycle;
+    return distance;
+}
+
+bool Graph::Johnson(QLabel *label, bool original)
+{
+    //Bottom line for debug purposes!
+    //drawGraph(label, true);
+    //*******************************
+
+    QPointer<Graph> currentGraph;
+
+    if(original)
+    {
+        currentGraph = new Graph;
+        currentGraph->importFromAdjacencyMatrix(this->exportToAdjacenecyMatrix(), true);
+    }
+    else
+        currentGraph = this;
+
+    int qId = currentGraph->addVertex(new Vertex(currentGraph->getVertexCount(), "Johnson node"));
+    for(int i = 0; i < currentGraph->getVertexCount() - 1; i++)
+    {
+        currentGraph->addEdge(new Edge(currentGraph->operator [](qId), currentGraph->operator [](i), 0, true));
+    }
+
+    auto distance = currentGraph->BellmanFord(0, qId);
+    if(distance.empty())
+        return false;
+
+    for(int i = 0; i < currentGraph->getEdgeCount(); i++)
+    {
+        currentGraph->getEdge(i)->setWeight(currentGraph->getEdge(i)->getWeight() + distance[currentGraph->getEdge(i)->getStart()->getId()] - distance[currentGraph->getEdge(i)->getEnd()->getId()]);
+    }
+
+    currentGraph->removeVertex(currentGraph->operator [](qId));
+
+    QString output = "Results of Johnson algorithm:\n\n";
+
+    for(int i = 0; i < currentGraph->getVertexCount(); i++)
+    {
+        auto distance = currentGraph->Dijkstra(0, i);
+
+        for(int j = 0; j < distance.size(); j++)
+        {
+            output.append("Path (").append(QString::number(i)).append("-").append(QString::number(j)).append(") distance: ").append(QString::number(distance[j])).append("; ");
+        }
+        output.append("\n");
+    }
+
+    if(label != 0)
+        label->setText(output);
+
+    return true;
 }
 
 /**
@@ -654,6 +758,37 @@ bool Graph::addUniqueEdge(Edge *newEdge)
         _edgeList.append(newEdge);
 
     return success;
+}
+
+bool Graph::removeVertex(Vertex *vertex)
+{
+    for(int i = 0; i < vertex->getEdges().size(); i++)
+    {
+        removeEdge(vertex->getEdges()[i]);
+    }
+    vertex->clearEdgeList();
+
+    _vertexList.removeOne(vertex);
+
+    delete vertex;
+
+    return true;
+}
+
+bool Graph::removeEdge(Edge *edge)
+{
+    edge->getStart()->getEdges().removeOne(edge);
+    edge->getEnd()->getEdges().removeOne(edge);
+
+    edge->getStart()->getNeighbours().removeOne(edge->getEnd());
+    if(!edge->isOriented())
+        edge->getEnd()->getNeighbours().removeOne(edge->getStart());
+
+    _edgeList.removeOne(edge);
+
+    delete edge;
+
+    return true;
 }
 
 void Graph::setRandomWeights(int start, int end)

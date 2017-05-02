@@ -43,12 +43,19 @@ void QGraphUtilityTest::on_generateButton_clicked()
             break;
         }
 
+        if(ui.graphTypeComboBox->currentIndex() == 2 && ui.dijkstraRadio->isChecked())
+        {
+            randomGraph->setRandomWeights(0, 10);
+
+            randomGraph->Dijkstra(ui.additionalInfoLabel, ui.bellmanFordSpinBox->value());
+        }
+
         if(ui.graphTypeComboBox->currentIndex() == 2 && ui.bellmanFordRadio->isChecked())
         {
             randomGraph->setRandomWeights(-5, 10);
 
             if(ui.negativeCyclesCheckBox->isChecked())
-                while(!randomGraph->BellmanFord(ui.additionalInfoLabel, ui.bellmanFordSpinBox->value()))
+                while(randomGraph->BellmanFord(ui.additionalInfoLabel, ui.bellmanFordSpinBox->value()).empty())
                 {
                     delete randomGraph;
                     while((randomGraph = Graph::generateRandomGraph(ui.vertexSpinBox->value(), ui.probabilitySpinBox->value(), Graph::RandomGraph::DigraphFixedProbability))->Kosaraju(ui.additionalInfoLabel) != ui.vertexSpinBox->value())
@@ -59,6 +66,24 @@ void QGraphUtilityTest::on_generateButton_clicked()
                 }
             else
                 randomGraph->BellmanFord(ui.additionalInfoLabel, ui.bellmanFordSpinBox->value());
+        }
+
+        if(ui.graphTypeComboBox->currentIndex() == 2 && ui.johnsonRadio->isChecked())
+        {
+            randomGraph->setRandomWeights(-5, 10);
+
+            if(ui.negativeCyclesCheckBox->isChecked())
+                while(randomGraph->BellmanFord(ui.additionalInfoLabel, ui.bellmanFordSpinBox->value()).empty())
+                {
+                    delete randomGraph;
+                    while((randomGraph = Graph::generateRandomGraph(ui.vertexSpinBox->value(), ui.probabilitySpinBox->value(), Graph::RandomGraph::DigraphFixedProbability))->Kosaraju(ui.additionalInfoLabel) != ui.vertexSpinBox->value())
+                    {
+                        delete randomGraph;
+                    }
+                    randomGraph->setRandomWeights(-5, 10);
+                }
+
+            randomGraph->Johnson(ui.additionalInfoLabel, ui.originalGraphCheckBox->isChecked());
         }
 
         if(ui.graphTypeComboBox->currentIndex() == 1 && ui.transponeGraphRadio->isChecked())
