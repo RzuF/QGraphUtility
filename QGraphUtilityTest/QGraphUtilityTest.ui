@@ -130,6 +130,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QRadioButton" name="primRadio">
+        <property name="text">
+         <string>Prim</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QRadioButton" name="kosarajuRadio">
         <property name="text">
          <string>Kosaraju</string>

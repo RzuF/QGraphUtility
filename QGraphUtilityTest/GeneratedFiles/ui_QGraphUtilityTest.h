@@ -55,6 +55,7 @@ public:
     QRadioButton *transponeGraphRadio;
     QRadioButton *dijkstraRadio;
     QRadioButton *distanceMatrixRadio;
+    QRadioButton *primRadio;
     QRadioButton *kosarajuRadio;
     QRadioButton *bellmanFordRadio;
     QRadioButton *johnsonRadio;
@@ -180,6 +181,11 @@ public:
         distanceMatrixRadio->setObjectName(QStringLiteral("distanceMatrixRadio"));
 
         horizontalLayout_4->addWidget(distanceMatrixRadio);
+
+        primRadio = new QRadioButton(centralWidget);
+        primRadio->setObjectName(QStringLiteral("primRadio"));
+
+        horizontalLayout_4->addWidget(primRadio);
 
         kosarajuRadio = new QRadioButton(centralWidget);
         kosarajuRadio->setObjectName(QStringLiteral("kosarajuRadio"));
@@ -311,6 +317,7 @@ public:
         transponeGraphRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Transponed Graph", Q_NULLPTR));
         dijkstraRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Dijkstra", Q_NULLPTR));
         distanceMatrixRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Distance Matrix", Q_NULLPTR));
+        primRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Prim", Q_NULLPTR));
         kosarajuRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Kosaraju", Q_NULLPTR));
         bellmanFordRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Bellman-Ford", Q_NULLPTR));
         johnsonRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Johnson", Q_NULLPTR));

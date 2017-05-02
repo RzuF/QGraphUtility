@@ -7,6 +7,8 @@
 #include <ctime>
 #include <stack>
 #include <climits>
+#include <queue>
+#include <functional>
 #include <QPointer>
 
 Graph::GraphException Graph::VertexAlreadyInGraph("Vertex already in Graph object");
@@ -487,6 +489,48 @@ void Graph::drawGraph(QLabel* label, bool colorize, int radius) const
 
     label->setPicture(myPicture);
     label->show();
+}
+
+Graph* Graph::Prim(QLabel *label, int startVertex)
+{
+    auto compareLambda = [&](Edge* first, Edge* second)->bool {return first->getWeight() > second->getWeight();};
+    std::priority_queue<Edge*, std::vector<Edge*>, decltype(compareLambda)> edgeQueue(compareLambda);
+
+    foreach (auto vertex, _vertexList)
+    {
+        vertex->UnVisit();
+    }
+
+    Graph* minimumSpanningTree = new Graph;
+
+    _vertexList[startVertex]->Visit();
+
+    Vertex* currentVertex = _vertexList[startVertex];
+
+    for(int i = 0; i < _vertexList.size() - 1; i++)
+    {
+        foreach(auto edge, currentVertex->getEdges())
+        {
+            if(edge->getStart() != currentVertex)
+                continue;
+
+            if(!edge->getEnd()->isVisited())
+                edgeQueue.push(edge);
+        }
+
+        Edge* currentEdge = edgeQueue.top();
+        edgeQueue.pop();
+
+        if(currentEdge->getEnd()->isVisited())
+            continue;
+
+        minimumSpanningTree->addEdge(currentEdge);
+        currentEdge->getEnd()->Visit();
+
+        currentVertex = currentEdge->getEnd();
+    }
+
+    return minimumSpanningTree;
 }
 
 int Graph::Kosaraju(QLabel* label)

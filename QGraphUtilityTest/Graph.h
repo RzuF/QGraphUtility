@@ -106,6 +106,7 @@ public:
     void drawGraph(QLabel* label, bool colorize = false, int radius = 200) const;
 
     //Algorith methos
+    Graph* Prim(QLabel* label, int startVertex);
     int Kosaraju(QLabel* label);
     std::vector<int> Dijkstra(QLabel* label, int startVertex = 0);
     std::vector<int> BellmanFord(QLabel* label, int startVertex = 0);

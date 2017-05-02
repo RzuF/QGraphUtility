@@ -58,6 +58,22 @@ void QGraphUtilityTest::on_generateButton_clicked()
             tmpGraph->Dijkstra(ui.additionalInfoLabel, ui.bellmanFordSpinBox->value());
         }
 
+        if(ui.graphTypeComboBox->currentIndex() == 3 && ui.primRadio->isChecked())
+        {
+            while(!(randomGraph = Graph::generateRandomGraph(ui.vertexSpinBox->value(), ui.probabilitySpinBox->value(), Graph::RandomGraph::FixedProbability))->isConnected())
+            {
+                delete randomGraph;
+            }
+
+            randomGraph->setRandomWeights(1, 10);
+
+            QPointer<Graph> tmpGraph = new Graph;
+            tmpGraph->importFromAdjacencyMatrix(randomGraph->exportToAdjacenecyMatrix(), true);
+
+            QPointer<Graph> mst = tmpGraph->Prim(ui.additionalInfoLabel, ui.bellmanFordSpinBox->value());
+            mst->drawGraph(ui.additionalInfoLabel, ui.colorizeCheckBox->isChecked());
+        }
+
         if(ui.graphTypeComboBox->currentIndex() == 3 && ui.distanceMatrixRadio->isChecked())
         {
             while(!(randomGraph = Graph::generateRandomGraph(ui.vertexSpinBox->value(), ui.probabilitySpinBox->value(), Graph::RandomGraph::FixedProbability))->isConnected())
