@@ -40,6 +40,7 @@ void QGraphUtilityTest::on_generateButton_clicked()
             break;
         case 3:
             randomGraph = Graph::generateRandomGraph(ui.vertexSpinBox->value(), ui.probabilitySpinBox->value(), Graph::RandomGraph::FixedProbability);
+            ui.additionalInfoLabel->setText(randomGraph->isConnected() ? "Connected" : "Not Connected");
             break;
         }
 

@@ -920,11 +920,9 @@ bool Graph::isWeighted() const
 
 bool Graph::isConnected() const
 {
-    foreach (auto vertex, _vertexList)
-    {
-        if(vertex->getEdges().size() < 1)
-            return false;
-    }
+    std::stack<int> stack;
 
-    return true;
+    _vertexList[0]->DFS(stack);
+
+    return stack.size() == _vertexList.size();
 }
