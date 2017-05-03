@@ -920,6 +920,11 @@ bool Graph::isWeighted() const
 
 bool Graph::isConnected() const
 {
+    foreach (auto vertex, _vertexList)
+    {
+        vertex->UnVisit();
+    }
+
     std::stack<int> stack;
 
     _vertexList[0]->DFS(stack);
