@@ -112,6 +112,7 @@ public:
     std::vector<int> BellmanFord(QLabel* label, int startVertex = 0);
     bool Johnson(QLabel* label, bool original = false);
     bool DistanceMatrix(QLabel* label);
+    std::stack<int> GreatestConnectedCompound(QLabel* label);
 
 
 signals:

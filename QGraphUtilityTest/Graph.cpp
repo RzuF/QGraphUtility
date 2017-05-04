@@ -23,7 +23,6 @@ Graph* Graph::generateRandomGraphFixedEdges(int n, int l)
     }
 
     int maxEdgeCount = n*(n-1)/2;
-    QList<Edge*> absentEdgeList;
 
     if(l < maxEdgeCount/2)
     {
@@ -39,7 +38,9 @@ Graph* Graph::generateRandomGraphFixedEdges(int n, int l)
         }
     }
     else
-    {
+    {        
+        QList<Edge*> absentEdgeList;
+
         while(absentEdgeList.size() < maxEdgeCount - l)
         {
             auto startVertex = newRandomGraph->operator [](qrand() % n);
@@ -68,6 +69,7 @@ Graph* Graph::generateRandomGraphFixedEdges(int n, int l)
                             || (edge->getStart() == endVertex && edge->getEnd() == startVertex))
                     {
                         absentEdge = true;
+                        absentEdgeList.removeOne(edge);
                         break;
                     }
                 }
@@ -100,7 +102,8 @@ Graph* Graph::generateRandomGraphFixedProbability(int n, double p)
 
             double probablitity = static_cast<double>(qrand()) / RAND_MAX;
 
-            if(!newRandomGraph->isVertexesConnected(startVertex, endVertex) && probablitity < p)
+            //if(!newRandomGraph->isVertexesConnected(startVertex, endVertex) && probablitity < p)
+            if(probablitity < p)
                 newRandomGraph->addEdge(new Edge(startVertex, endVertex));
         }
     }
@@ -815,6 +818,44 @@ bool Graph::DistanceMatrix(QLabel *label)
         label->setText(output);
 
     return true;
+}
+
+std::stack<int> Graph::GreatestConnectedCompound(QLabel *label)
+{
+    foreach (auto vertex, _vertexList)
+    {
+        vertex->UnVisit();
+    }
+
+    std::stack<int> biggestConnectedCompound;
+
+    foreach (auto vertex, _vertexList)
+    {
+        if(!vertex->isVisited())
+        {
+            std::stack<int> currentConnectedCompound;
+            vertex->DFS(currentConnectedCompound);
+
+            if(currentConnectedCompound.size() > biggestConnectedCompound.size())
+                biggestConnectedCompound = currentConnectedCompound;
+        }
+    }
+
+    QString output = "Greatest Connected Compound algorithm:\n\n";
+
+    output.append("Size : ").append(QString::number(biggestConnectedCompound.size())).append("\nVertexes: ");
+    while(!biggestConnectedCompound.empty())
+    {
+        int currentId = biggestConnectedCompound.top();
+        biggestConnectedCompound.pop();
+        output.append(QString::number(currentId)).append(", ");
+    }
+    output.append("\n");
+
+
+    label->setText(output);
+
+    return biggestConnectedCompound;
 }
 
 /**

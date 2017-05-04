@@ -26,6 +26,7 @@ void QGraphUtilityTest::on_generateButton_clicked()
         {
         case 0:
             randomGraph = Graph::generateRandomGraph(ui.vertexSpinBox->value(), ui.edgeSpinBox->value(), Graph::RandomGraph::FixedEdges);
+            randomGraph->GreatestConnectedCompound(ui.additionalInfoLabel);
             break;
         case 1:
             randomGraph = Graph::generateRandomGraph(ui.vertexSpinBox->value(), ui.probabilitySpinBox->value(), Graph::RandomGraph::DigraphFixedProbability);

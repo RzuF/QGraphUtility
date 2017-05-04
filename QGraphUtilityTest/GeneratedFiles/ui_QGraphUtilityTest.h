@@ -23,11 +23,12 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QToolBar>
+#include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -38,6 +39,9 @@ class Ui_QGraphUtilityTestClass
 public:
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout;
+    QTabWidget *tabWidget;
+    QWidget *tab;
+    QVBoxLayout *verticalLayout_3;
     QHBoxLayout *horizontalLayout_3;
     QHBoxLayout *horizontalLayout;
     QLabel *label;
@@ -71,18 +75,26 @@ public:
     QLabel *label_4;
     QSpinBox *bellmanFordSpinBox;
     QPushButton *generateButton;
+    QWidget *tab_2;
+    QVBoxLayout *verticalLayout_4;
+    QHBoxLayout *horizontalLayout_11;
+    QLabel *label_5;
+    QPlainTextEdit *sequenceTextEdit;
+    QGroupBox *groupBox_3;
+    QHBoxLayout *horizontalLayout_12;
+    QCheckBox *colorize2CheckBox;
+    QPushButton *drawButton;
     QLabel *graphShowLabel;
     QLabel *additionalInfoLabel;
     QMenuBar *menuBar;
     QMenu *menuTest;
-    QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
     void setupUi(QMainWindow *QGraphUtilityTestClass)
     {
         if (QGraphUtilityTestClass->objectName().isEmpty())
             QGraphUtilityTestClass->setObjectName(QStringLiteral("QGraphUtilityTestClass"));
-        QGraphUtilityTestClass->resize(655, 398);
+        QGraphUtilityTestClass->resize(803, 523);
         centralWidget = new QWidget(QGraphUtilityTestClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setLayoutDirection(Qt::LeftToRight);
@@ -90,18 +102,27 @@ public:
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        tabWidget = new QTabWidget(centralWidget);
+        tabWidget->setObjectName(QStringLiteral("tabWidget"));
+        tab = new QWidget();
+        tab->setObjectName(QStringLiteral("tab"));
+        tab->setAutoFillBackground(true);
+        verticalLayout_3 = new QVBoxLayout(tab);
+        verticalLayout_3->setSpacing(6);
+        verticalLayout_3->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setSpacing(6);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        label = new QLabel(centralWidget);
+        label = new QLabel(tab);
         label->setObjectName(QStringLiteral("label"));
 
         horizontalLayout->addWidget(label);
 
-        vertexSpinBox = new QSpinBox(centralWidget);
+        vertexSpinBox = new QSpinBox(tab);
         vertexSpinBox->setObjectName(QStringLiteral("vertexSpinBox"));
 
         horizontalLayout->addWidget(vertexSpinBox);
@@ -118,12 +139,12 @@ public:
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setSpacing(6);
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        label_2 = new QLabel(centralWidget);
+        label_2 = new QLabel(tab);
         label_2->setObjectName(QStringLiteral("label_2"));
 
         horizontalLayout_5->addWidget(label_2);
 
-        edgeSpinBox = new QSpinBox(centralWidget);
+        edgeSpinBox = new QSpinBox(tab);
         edgeSpinBox->setObjectName(QStringLiteral("edgeSpinBox"));
 
         horizontalLayout_5->addWidget(edgeSpinBox);
@@ -134,12 +155,12 @@ public:
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setSpacing(6);
         horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
-        label_3 = new QLabel(centralWidget);
+        label_3 = new QLabel(tab);
         label_3->setObjectName(QStringLiteral("label_3"));
 
         horizontalLayout_6->addWidget(label_3);
 
-        probabilitySpinBox = new QDoubleSpinBox(centralWidget);
+        probabilitySpinBox = new QDoubleSpinBox(tab);
         probabilitySpinBox->setObjectName(QStringLiteral("probabilitySpinBox"));
         probabilitySpinBox->setDecimals(4);
         probabilitySpinBox->setMaximum(1);
@@ -156,66 +177,66 @@ public:
 
         horizontalLayout_3->addLayout(horizontalLayout_2);
 
-        graphTypeComboBox = new QComboBox(centralWidget);
+        graphTypeComboBox = new QComboBox(tab);
         graphTypeComboBox->setObjectName(QStringLiteral("graphTypeComboBox"));
 
         horizontalLayout_3->addWidget(graphTypeComboBox);
 
 
-        verticalLayout->addLayout(horizontalLayout_3);
+        verticalLayout_3->addLayout(horizontalLayout_3);
 
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setSpacing(6);
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
-        transponeGraphRadio = new QRadioButton(centralWidget);
+        transponeGraphRadio = new QRadioButton(tab);
         transponeGraphRadio->setObjectName(QStringLiteral("transponeGraphRadio"));
 
         horizontalLayout_4->addWidget(transponeGraphRadio);
 
-        dijkstraRadio = new QRadioButton(centralWidget);
+        dijkstraRadio = new QRadioButton(tab);
         dijkstraRadio->setObjectName(QStringLiteral("dijkstraRadio"));
 
         horizontalLayout_4->addWidget(dijkstraRadio);
 
-        distanceMatrixRadio = new QRadioButton(centralWidget);
+        distanceMatrixRadio = new QRadioButton(tab);
         distanceMatrixRadio->setObjectName(QStringLiteral("distanceMatrixRadio"));
 
         horizontalLayout_4->addWidget(distanceMatrixRadio);
 
-        primRadio = new QRadioButton(centralWidget);
+        primRadio = new QRadioButton(tab);
         primRadio->setObjectName(QStringLiteral("primRadio"));
 
         horizontalLayout_4->addWidget(primRadio);
 
-        kosarajuRadio = new QRadioButton(centralWidget);
+        kosarajuRadio = new QRadioButton(tab);
         kosarajuRadio->setObjectName(QStringLiteral("kosarajuRadio"));
 
         horizontalLayout_4->addWidget(kosarajuRadio);
 
-        bellmanFordRadio = new QRadioButton(centralWidget);
+        bellmanFordRadio = new QRadioButton(tab);
         bellmanFordRadio->setObjectName(QStringLiteral("bellmanFordRadio"));
 
         horizontalLayout_4->addWidget(bellmanFordRadio);
 
-        johnsonRadio = new QRadioButton(centralWidget);
+        johnsonRadio = new QRadioButton(tab);
         johnsonRadio->setObjectName(QStringLiteral("johnsonRadio"));
         johnsonRadio->setContextMenuPolicy(Qt::PreventContextMenu);
 
         horizontalLayout_4->addWidget(johnsonRadio);
 
 
-        verticalLayout->addLayout(horizontalLayout_4);
+        verticalLayout_3->addLayout(horizontalLayout_4);
 
         horizontalLayout_7 = new QHBoxLayout();
         horizontalLayout_7->setSpacing(6);
         horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
-        colorizeCheckBox = new QCheckBox(centralWidget);
+        colorizeCheckBox = new QCheckBox(tab);
         colorizeCheckBox->setObjectName(QStringLiteral("colorizeCheckBox"));
         colorizeCheckBox->setChecked(true);
 
         horizontalLayout_7->addWidget(colorizeCheckBox);
 
-        groupBox_2 = new QGroupBox(centralWidget);
+        groupBox_2 = new QGroupBox(tab);
         groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
         horizontalLayout_9 = new QHBoxLayout(groupBox_2);
         horizontalLayout_9->setSpacing(6);
@@ -229,7 +250,7 @@ public:
 
         horizontalLayout_7->addWidget(groupBox_2);
 
-        groupBox = new QGroupBox(centralWidget);
+        groupBox = new QGroupBox(tab);
         groupBox->setObjectName(QStringLiteral("groupBox"));
         groupBox->setAutoFillBackground(false);
         horizontalLayout_10 = new QHBoxLayout(groupBox);
@@ -261,12 +282,58 @@ public:
         horizontalLayout_7->addWidget(groupBox);
 
 
-        verticalLayout->addLayout(horizontalLayout_7);
+        verticalLayout_3->addLayout(horizontalLayout_7);
 
-        generateButton = new QPushButton(centralWidget);
+        generateButton = new QPushButton(tab);
         generateButton->setObjectName(QStringLiteral("generateButton"));
 
-        verticalLayout->addWidget(generateButton);
+        verticalLayout_3->addWidget(generateButton);
+
+        tabWidget->addTab(tab, QString());
+        tab_2 = new QWidget();
+        tab_2->setObjectName(QStringLiteral("tab_2"));
+        verticalLayout_4 = new QVBoxLayout(tab_2);
+        verticalLayout_4->setSpacing(6);
+        verticalLayout_4->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
+        horizontalLayout_11 = new QHBoxLayout();
+        horizontalLayout_11->setSpacing(6);
+        horizontalLayout_11->setObjectName(QStringLiteral("horizontalLayout_11"));
+        label_5 = new QLabel(tab_2);
+        label_5->setObjectName(QStringLiteral("label_5"));
+
+        horizontalLayout_11->addWidget(label_5);
+
+        sequenceTextEdit = new QPlainTextEdit(tab_2);
+        sequenceTextEdit->setObjectName(QStringLiteral("sequenceTextEdit"));
+
+        horizontalLayout_11->addWidget(sequenceTextEdit);
+
+
+        verticalLayout_4->addLayout(horizontalLayout_11);
+
+        groupBox_3 = new QGroupBox(tab_2);
+        groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
+        horizontalLayout_12 = new QHBoxLayout(groupBox_3);
+        horizontalLayout_12->setSpacing(6);
+        horizontalLayout_12->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_12->setObjectName(QStringLiteral("horizontalLayout_12"));
+        colorize2CheckBox = new QCheckBox(groupBox_3);
+        colorize2CheckBox->setObjectName(QStringLiteral("colorize2CheckBox"));
+
+        horizontalLayout_12->addWidget(colorize2CheckBox);
+
+
+        verticalLayout_4->addWidget(groupBox_3);
+
+        drawButton = new QPushButton(tab_2);
+        drawButton->setObjectName(QStringLiteral("drawButton"));
+
+        verticalLayout_4->addWidget(drawButton);
+
+        tabWidget->addTab(tab_2, QString());
+
+        verticalLayout->addWidget(tabWidget);
 
         graphShowLabel = new QLabel(centralWidget);
         graphShowLabel->setObjectName(QStringLiteral("graphShowLabel"));
@@ -283,13 +350,10 @@ public:
         QGraphUtilityTestClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(QGraphUtilityTestClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 655, 20));
+        menuBar->setGeometry(QRect(0, 0, 803, 20));
         menuTest = new QMenu(menuBar);
         menuTest->setObjectName(QStringLiteral("menuTest"));
         QGraphUtilityTestClass->setMenuBar(menuBar);
-        mainToolBar = new QToolBar(QGraphUtilityTestClass);
-        mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
-        QGraphUtilityTestClass->addToolBar(Qt::TopToolBarArea, mainToolBar);
         statusBar = new QStatusBar(QGraphUtilityTestClass);
         statusBar->setObjectName(QStringLiteral("statusBar"));
         QGraphUtilityTestClass->setStatusBar(statusBar);
@@ -297,6 +361,9 @@ public:
         menuBar->addAction(menuTest->menuAction());
 
         retranslateUi(QGraphUtilityTestClass);
+
+        tabWidget->setCurrentIndex(1);
+
 
         QMetaObject::connectSlotsByName(QGraphUtilityTestClass);
     } // setupUi
@@ -328,6 +395,12 @@ public:
         negativeCyclesCheckBox->setText(QApplication::translate("QGraphUtilityTestClass", "Avoid Negative Cycles", Q_NULLPTR));
         label_4->setText(QApplication::translate("QGraphUtilityTestClass", "Start Vertex", Q_NULLPTR));
         generateButton->setText(QApplication::translate("QGraphUtilityTestClass", "Generate new graph", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("QGraphUtilityTestClass", "Zestaw 1, 3, 4, 2.3", Q_NULLPTR));
+        label_5->setText(QApplication::translate("QGraphUtilityTestClass", "Number sequence", Q_NULLPTR));
+        groupBox_3->setTitle(QApplication::translate("QGraphUtilityTestClass", "Preferences", Q_NULLPTR));
+        colorize2CheckBox->setText(QApplication::translate("QGraphUtilityTestClass", "Colorize", Q_NULLPTR));
+        drawButton->setText(QApplication::translate("QGraphUtilityTestClass", "Draw Graph", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("QGraphUtilityTestClass", "Zestaw 2", Q_NULLPTR));
         graphShowLabel->setText(QApplication::translate("QGraphUtilityTestClass", "First Graph", Q_NULLPTR));
         additionalInfoLabel->setText(QString());
         menuTest->setTitle(QApplication::translate("QGraphUtilityTestClass", "Test", Q_NULLPTR));
