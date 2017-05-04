@@ -171,3 +171,13 @@ void QGraphUtilityTest::on_vertexSpinBox_valueChanged(int arg1)
     ui.edgeSpinBox->setMaximum(arg1*(arg1-1)/2);
     ui.bellmanFordSpinBox->setMaximum(arg1-1);
 }
+
+void QGraphUtilityTest::on_drawButton_clicked()
+{
+    Graph sequenceGraph;
+
+    if(sequenceGraph.importFromString(ui.sequenceTextEdit->toPlainText(), Graph::Format::Sequence))
+        sequenceGraph.drawGraph(ui.graphShowLabel, ui.colorize2CheckBox->isChecked());
+    else
+        ui.graphShowLabel->setText("Sequence is invalid.");
+}

@@ -5,6 +5,10 @@ Vertex::Vertex(int id, QString name) : _id(id), _edges(QList<Edge*>()), _name(na
 {
 }
 
+Vertex::Vertex(int id, int degree, QString name) : _id(id), _degree(degree), _edges(QList<Edge*>()), _name(name), _visited(false)
+{
+}
+
 Vertex::Vertex(int id, QList<Edge*> edges, QString name) : _id(id), _edges(edges), _name(name), _visited(false)
 {
 }
@@ -98,4 +102,19 @@ int Vertex::getId() const
 bool Vertex::isVisited() const
 {
     return _visited;
+}
+
+int Vertex::getDegree() const
+{
+    return _degree;
+}
+
+void Vertex::setDegree(int degree)
+{
+    _degree = degree;
+}
+
+void Vertex::reduceDegree()
+{
+    --_degree;
 }

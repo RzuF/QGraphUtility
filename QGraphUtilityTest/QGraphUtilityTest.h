@@ -15,6 +15,8 @@ private slots:
 
     void on_vertexSpinBox_valueChanged(int arg1);
 
+    void on_drawButton_clicked();
+
 private:
     Ui::QGraphUtilityTestClass ui;
 };

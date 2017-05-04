@@ -40,7 +40,8 @@ public:
     {
         AdjacencyList,
         AdjacencyMatrix,
-        IncidenceList
+        IncidenceList,
+        Sequence
     };
 
     enum RandomGraph
@@ -54,6 +55,7 @@ public:
     typedef std::vector<std::list<int>> AdjacencyListType;
     typedef std::vector<std::vector<int>> AdjacenecyMatrixType;
     typedef std::vector<std::vector<int>> IncidenceMatrixType;
+    typedef std::vector<int> SequenceType;
 
     //Exceptions
     static GraphException VertexAlreadyInGraph;
@@ -69,6 +71,7 @@ public:
     bool importFromAdjacencyList(AdjacencyListType adjacencyList, bool digraph = false);
     bool importFromAdjacencyMatrix(AdjacenecyMatrixType adjacencyMatrix, bool digraph = false);
     bool importFromIncidenceMatrix(IncidenceMatrixType incidenceMatrix);
+    bool importFromSequence(SequenceType sequence);
 
     //Export methods
     AdjacencyListType exportToAdjacencyList() const;
@@ -96,6 +99,8 @@ public:
     int getEdgeCount() const;
     int getNextId();
     Edge* getEdge(int i) const;
+
+    std::vector<Vertex*> getNonZeroDegreeVertexes() const;
 
     Vertex *operator[](int i) const;
 

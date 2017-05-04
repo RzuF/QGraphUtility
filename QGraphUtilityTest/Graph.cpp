@@ -102,7 +102,6 @@ Graph* Graph::generateRandomGraphFixedProbability(int n, double p)
 
             double probablitity = static_cast<double>(qrand()) / RAND_MAX;
 
-            //if(!newRandomGraph->isVertexesConnected(startVertex, endVertex) && probablitity < p)
             if(probablitity < p)
                 newRandomGraph->addEdge(new Edge(startVertex, endVertex));
         }
@@ -289,6 +288,33 @@ bool Graph::importFromIncidenceMatrix(Graph::IncidenceMatrixType incidenceMatrix
     return true;
 }
 
+bool Graph::importFromSequence(Graph::SequenceType sequence)
+{
+    for(int i = 0; i < sequence.size(); i++)
+    {
+        addVertex(new Vertex(i, sequence[i]));
+    }
+
+    while(true)
+    {
+        auto vertexes = getNonZeroDegreeVertexes();
+
+        if(vertexes.empty())
+            return true;
+
+        if(vertexes[0]->getDegree() > vertexes.size() - 1)
+            return false;
+
+        for(int i = 1; i < vertexes.size() && vertexes[0]->getDegree() > 0; i++)
+        {
+            vertexes[i]->reduceDegree();
+            vertexes[0]->reduceDegree();
+
+            addEdge(new Edge(vertexes[i], vertexes[0]));
+        }
+    }
+}
+
 Graph::AdjacencyListType Graph::exportToAdjacencyList() const
 {
     std::vector<std::list<int>> adjacencyList(_vertexList.size());
@@ -343,6 +369,31 @@ Graph::IncidenceMatrixType Graph::exportToIncidenceMatrix() const
     return incidenceMatrix;
 }
 
+bool Graph::importFromString(QString source, Graph::Format format)
+{
+    switch (format)
+    {
+    case AdjacencyList:
+
+        break;
+    case AdjacencyMatrix:
+
+        break;
+    case IncidenceList:
+
+        break;
+
+    case Sequence:
+        SequenceType sequence;
+        auto sequenceParts = source.split(" ", QString::SkipEmptyParts);
+        foreach (auto part, sequenceParts)
+                sequence.push_back(part.toInt());
+
+        return importFromSequence(sequence);
+        break;
+    }
+}
+
 /**
  * @brief Add Vertex* to Graph object.
  * @param newVertex Pointer to Vertex object
@@ -389,6 +440,21 @@ int Graph::getNextId()
 Edge *Graph::getEdge(int i) const
 {
     return _edgeList[i];
+}
+
+std::vector<Vertex *> Graph::getNonZeroDegreeVertexes() const
+{
+    std::vector<Vertex *> nonZeroDegreeVertexes;
+    foreach (auto vertex, _vertexList)
+    {
+        if(vertex->getDegree())
+            nonZeroDegreeVertexes.push_back(vertex);
+    }
+
+    auto compareLambda = [&] (const Vertex* arg1, Vertex* arg2) { return arg1->getDegree() > arg2->getDegree(); };
+    std::sort(nonZeroDegreeVertexes.begin(), nonZeroDegreeVertexes.end(), compareLambda);
+
+    return nonZeroDegreeVertexes;
 }
 
 Vertex *Graph::operator[](int i) const

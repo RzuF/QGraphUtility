@@ -16,8 +16,11 @@ class Vertex : public QObject
 
     bool _visited;
 
+    int _degree;
+
 public:
-	Vertex(int id, QString name = "noName");
+    Vertex(int id, QString name = "noName");
+    Vertex(int id, int degree, QString name = "noName");
 	Vertex(int id, QList<Edge*> edges, QString name = "noName");
 	Vertex(int id, Edge* edge, QString name = "noName");
 	~Vertex();
@@ -37,4 +40,8 @@ public:
 
     int getId() const;
     bool isVisited() const;
+
+    int getDegree() const;
+    void setDegree(int degree);
+    void reduceDegree();
 };

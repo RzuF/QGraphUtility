@@ -320,6 +320,7 @@ public:
         horizontalLayout_12->setObjectName(QStringLiteral("horizontalLayout_12"));
         colorize2CheckBox = new QCheckBox(groupBox_3);
         colorize2CheckBox->setObjectName(QStringLiteral("colorize2CheckBox"));
+        colorize2CheckBox->setChecked(true);
 
         horizontalLayout_12->addWidget(colorize2CheckBox);
 
