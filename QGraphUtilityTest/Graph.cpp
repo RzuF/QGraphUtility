@@ -153,6 +153,33 @@ Graph *Graph::generateRandomKRegularGraphFixedDegree(int n, int k)
     return newRandomGraph;
 }
 
+Graph *Graph::generateRandomGraphEulerCycle(int n)
+{
+    Graph* newRandomGraph = new Graph;
+
+    std::vector<int> sequence;
+
+    do
+    {
+        delete newRandomGraph;
+        newRandomGraph = new Graph;
+        sequence.clear();
+        for(int i = 0; i < n; i++)
+        {
+            int degree = qrand() % (n-1);
+            while(degree % 2)
+            {
+                degree = qrand() % (n-1);
+            }
+
+            sequence.push_back(degree);
+        }
+    }
+    while(!newRandomGraph->importFromSequence(sequence));
+
+    return newRandomGraph;
+}
+
 Graph::Graph(QObject *parent) : QObject(parent)
 {
 
@@ -504,6 +531,9 @@ Graph* Graph::generateRandomGraph(int n, double l, Graph::RandomGraph method)
 
     if(method == Graph::RandomGraph::KRegularFixedDegree)
         return Graph::generateRandomKRegularGraphFixedDegree(n, l);
+
+    if(method == Graph::RandomGraph::EulerCycle)
+        return Graph::generateRandomGraphEulerCycle(n);
 }
 
 void Graph::drawGraph(QLabel* label, bool colorize, int radius) const
@@ -945,6 +975,36 @@ std::stack<int> Graph::GreatestConnectedCompound(QLabel *label)
     return biggestConnectedCompound;
 }
 
+std::stack<int> Graph::FindEulerCycle(QLabel *label)
+{
+    std::stack<int> eulerCycle;
+    restoreDegreeOfVertexes();
+
+    foreach (auto vertex, _vertexList)
+    {
+        if(vertex->getDegree() > 0)
+        {
+            vertex->DFSEuler(eulerCycle);
+            break;
+        }
+    }
+
+    QString output = "Find Euler Cycle algorithm:\n\n";
+
+    output.append("Size : ").append(QString::number(eulerCycle.size())).append(" with ").append(QString::number(_edgeList.size())).append(" edges in Graph\nVertexes: ");
+    while(!eulerCycle.empty())
+    {
+        int currentId = eulerCycle.top();
+        eulerCycle.pop();
+        output.append(QString::number(currentId)).append(", ");
+    }
+    output.append("\n");
+
+    label->setText(output);
+
+    return eulerCycle;
+}
+
 /**
  * @brief Add Edge* to Graph object and returns bool true adding was successful
  * @param newEdge Pointer to Edge object
@@ -1041,6 +1101,9 @@ void Graph::replaceEdges(Edge *firstEdge, Edge *secondEdge)
 
 void Graph::randomizeGraphBySwitchingEdges(int changes)
 {
+    if(_edgeList.empty())
+        return;
+
     if(changes < 1)
         changes = qrand() % 10 + 1;
 
@@ -1062,7 +1125,7 @@ void Graph::randomizeGraphBySwitchingEdges(int changes)
                 secondEdge = copyOfEdgeList[qrand() % copyOfEdgeList.size()];
                 copyOfEdgeList.removeOne(secondEdge);
             }
-            while ((isVertexesConnected(firstEdge->getStart(), secondEdge->getEnd()) || isVertexesConnected(firstEdge->getEnd(), secondEdge->getStart())));
+            while ((isVertexesConnected(firstEdge->getStart(), secondEdge->getEnd()) || isVertexesConnected(firstEdge->getEnd(), secondEdge->getStart()) || firstEdge->getStart() == secondEdge->getEnd() || firstEdge->getEnd() == secondEdge->getStart()));
 
             if(secondEdge)
                 break;

@@ -422,6 +422,7 @@ public:
          << QApplication::translate("QGraphUtilityTestClass", "Strong Connected Digraph", Q_NULLPTR)
          << QApplication::translate("QGraphUtilityTestClass", "Fixed Probability", Q_NULLPTR)
          << QApplication::translate("QGraphUtilityTestClass", "Fixed Degree", Q_NULLPTR)
+         << QApplication::translate("QGraphUtilityTestClass", "Euler Cycle", Q_NULLPTR)
         );
         transponeGraphRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Transponed Graph", Q_NULLPTR));
         dijkstraRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Dijkstra", Q_NULLPTR));

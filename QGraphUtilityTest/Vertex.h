@@ -38,6 +38,7 @@ public:
     void UnVisit();
 
     void DFS(std::stack<int>& currentStack, bool reverse = false);
+    void DFSEuler(std::stack<int>& currentStack);
 
     int getId() const;
     bool isVisited() const;

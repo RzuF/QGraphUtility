@@ -22,6 +22,7 @@ class Graph : public QObject
     static Graph* generateRandomGraphFixedProbability(int n, double p);
     static Graph* generateRandomDigraphFixedProbability(int n, double p);
     static Graph* generateRandomKRegularGraphFixedDegree(int n, int k);
+    static Graph* generateRandomGraphEulerCycle(int n);
 
 public:
     class GraphException: public std::exception
@@ -50,7 +51,8 @@ public:
         FixedEdges,
         FixedProbability,
         DigraphFixedProbability,
-        KRegularFixedDegree
+        KRegularFixedDegree,
+        EulerCycle
     };
 
     //Typedefs
@@ -124,6 +126,7 @@ public:
     bool Johnson(QLabel* label, bool original = false);
     bool DistanceMatrix(QLabel* label);
     std::stack<int> GreatestConnectedCompound(QLabel* label);
+    std::stack<int> FindEulerCycle(QLabel* label);
 
 
 signals:

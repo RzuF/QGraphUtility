@@ -134,6 +134,11 @@
               <string>Fixed Degree</string>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>Euler Cycle</string>
+             </property>
+            </item>
            </widget>
           </item>
          </layout>

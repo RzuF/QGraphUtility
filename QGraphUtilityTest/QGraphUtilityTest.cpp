@@ -52,6 +52,11 @@ void QGraphUtilityTest::on_generateButton_clicked()
                 return;
             }
             break;
+
+        case 5:
+            randomGraph = Graph::generateRandomGraph(ui.vertexSpinBox->value(), ui.degreeSpinBox->value(), Graph::RandomGraph::EulerCycle);
+            //randomGraph->FindEulerCycle(ui.additionalInfoLabel);
+            break;
         }
 
         if(ui.graphTypeComboBox->currentIndex() == 3 && ui.dijkstraRadio->isChecked())

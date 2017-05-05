@@ -101,6 +101,21 @@ void Vertex::DFS(std::stack<int> &currentStack, bool reverse)
         currentStack.push(_id);
 }
 
+void Vertex::DFSEuler(std::stack<int> &currentStack)
+{
+    foreach (auto edge, _edges)
+    {
+        edge->getStart()->deleteEdge(edge);
+        edge->getEnd()->deleteEdge(edge);
+        if(edge->getStart() == this)
+            edge->getEnd()->DFSEuler(currentStack);
+        else
+            edge->getStart()->DFSEuler(currentStack);
+    }
+
+    currentStack.push(_id);
+}
+
 int Vertex::getId() const
 {
     return _id;
