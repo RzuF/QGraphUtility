@@ -138,6 +138,21 @@ Graph *Graph::generateRandomDigraphFixedProbability(int n, double p)
     return newRandomGraph;
 }
 
+Graph *Graph::generateRandomKRegularGraphFixedDegree(int n, int k)
+{
+    if(n*k % 2 || n < k + 1)
+        return 0;
+
+    Graph* newRandomGraph = new Graph;
+
+    std::vector<int> sequence(n, k);
+
+    newRandomGraph->importFromSequence(sequence);
+    newRandomGraph->randomizeGraphBySwitchingEdges();
+
+    return newRandomGraph;
+}
+
 Graph::Graph(QObject *parent) : QObject(parent)
 {
 
@@ -300,7 +315,10 @@ bool Graph::importFromSequence(Graph::SequenceType sequence)
         auto vertexes = getNonZeroDegreeVertexes();
 
         if(vertexes.empty())
+        {
+            restoreDegreeOfVertexes();
             return true;
+        }
 
         if(vertexes[0]->getDegree() > vertexes.size() - 1)
             return false;
@@ -483,6 +501,9 @@ Graph* Graph::generateRandomGraph(int n, double l, Graph::RandomGraph method)
 
     if(method == Graph::RandomGraph::DigraphFixedProbability)
         return Graph::generateRandomDigraphFixedProbability(n, l);
+
+    if(method == Graph::RandomGraph::KRegularFixedDegree)
+        return Graph::generateRandomKRegularGraphFixedDegree(n, l);
 }
 
 void Graph::drawGraph(QLabel* label, bool colorize, int radius) const
@@ -1001,6 +1022,54 @@ void Graph::setRandomWeights(int start, int end)
 {
     for(int i = 0; i < _edgeList.size(); i++)
         _edgeList[i]->setWeight(qrand() % (end - start) + start);
+}
+
+void Graph::restoreDegreeOfVertexes()
+{
+    foreach (auto vertex, _vertexList)
+    {
+        vertex->setDegree(vertex->getEdges().size());
+    }
+}
+
+void Graph::replaceEdges(Edge *firstEdge, Edge *secondEdge)
+{
+    auto tmpVertex = firstEdge->getEnd();
+    firstEdge->setEnd(secondEdge->getEnd());
+    secondEdge->setEnd(tmpVertex);
+}
+
+void Graph::randomizeGraphBySwitchingEdges(int changes)
+{
+    if(changes < 1)
+        changes = qrand() % 10 + 1;
+
+    for(int i = 0; i < changes; i++)
+    {
+        Edge* firstEdge, * secondEdge;
+        while(true)
+        {
+            auto copyOfEdgeList = _edgeList;
+            firstEdge = copyOfEdgeList[qrand() % copyOfEdgeList.size()];
+            copyOfEdgeList.removeOne(firstEdge);
+            do
+            {
+                if(copyOfEdgeList.empty())
+                {
+                    secondEdge = 0;
+                    break;
+                }
+                secondEdge = copyOfEdgeList[qrand() % copyOfEdgeList.size()];
+                copyOfEdgeList.removeOne(secondEdge);
+            }
+            while ((isVertexesConnected(firstEdge->getStart(), secondEdge->getEnd()) || isVertexesConnected(firstEdge->getEnd(), secondEdge->getStart())));
+
+            if(secondEdge)
+                break;
+        }
+
+        replaceEdges(firstEdge, secondEdge);
+    }
 }
 
 bool Graph::isVertexesConnected(Vertex *start, Vertex *end, bool oriented)

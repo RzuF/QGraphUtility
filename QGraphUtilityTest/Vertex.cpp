@@ -20,6 +20,7 @@ Vertex::Vertex(int id, Edge* edge, QString name) : _id(id), _name(name), _visite
 
 Vertex::~Vertex()
 {
+    return;
     foreach (auto edge, _edges)
 	{        
         if(edge != nullptr)
@@ -63,6 +64,12 @@ void Vertex::deleteNeighbour(Vertex *neighbour)
 {
     if(_neighbours.contains(neighbour))
         _neighbours.removeAll(neighbour);
+}
+
+void Vertex::deleteEdge(Edge *edge)
+{
+    if(_edges.contains(edge))
+        _edges.removeOne(edge);
 }
 
 void Vertex::clearEdgeList()

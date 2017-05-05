@@ -31,6 +31,7 @@ public:
     void addNeighbour(Vertex* newNeighbour);
     void addEdge(Edge* newEdge);
     void deleteNeighbour(Vertex* neighbour);
+    void deleteEdge(Edge* edge);
     void clearEdgeList();
 
     void Visit();

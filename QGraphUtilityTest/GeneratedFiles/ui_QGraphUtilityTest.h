@@ -54,6 +54,9 @@ public:
     QHBoxLayout *horizontalLayout_6;
     QLabel *label_3;
     QDoubleSpinBox *probabilitySpinBox;
+    QHBoxLayout *horizontalLayout_13;
+    QLabel *label_6;
+    QSpinBox *degreeSpinBox;
     QComboBox *graphTypeComboBox;
     QHBoxLayout *horizontalLayout_4;
     QRadioButton *transponeGraphRadio;
@@ -83,6 +86,9 @@ public:
     QGroupBox *groupBox_3;
     QHBoxLayout *horizontalLayout_12;
     QCheckBox *colorize2CheckBox;
+    QRadioButton *gccRadio;
+    QRadioButton *replaceEdgesRadio;
+    QSpinBox *replaceSpinBox;
     QPushButton *drawButton;
     QLabel *graphShowLabel;
     QLabel *additionalInfoLabel;
@@ -170,6 +176,22 @@ public:
 
 
         verticalLayout_2->addLayout(horizontalLayout_6);
+
+        horizontalLayout_13 = new QHBoxLayout();
+        horizontalLayout_13->setSpacing(6);
+        horizontalLayout_13->setObjectName(QStringLiteral("horizontalLayout_13"));
+        label_6 = new QLabel(tab);
+        label_6->setObjectName(QStringLiteral("label_6"));
+
+        horizontalLayout_13->addWidget(label_6);
+
+        degreeSpinBox = new QSpinBox(tab);
+        degreeSpinBox->setObjectName(QStringLiteral("degreeSpinBox"));
+
+        horizontalLayout_13->addWidget(degreeSpinBox);
+
+
+        verticalLayout_2->addLayout(horizontalLayout_13);
 
 
         horizontalLayout_2->addLayout(verticalLayout_2);
@@ -324,6 +346,23 @@ public:
 
         horizontalLayout_12->addWidget(colorize2CheckBox);
 
+        gccRadio = new QRadioButton(groupBox_3);
+        gccRadio->setObjectName(QStringLiteral("gccRadio"));
+
+        horizontalLayout_12->addWidget(gccRadio);
+
+        replaceEdgesRadio = new QRadioButton(groupBox_3);
+        replaceEdgesRadio->setObjectName(QStringLiteral("replaceEdgesRadio"));
+
+        horizontalLayout_12->addWidget(replaceEdgesRadio);
+
+        replaceSpinBox = new QSpinBox(groupBox_3);
+        replaceSpinBox->setObjectName(QStringLiteral("replaceSpinBox"));
+        replaceSpinBox->setMinimum(0);
+        replaceSpinBox->setValue(0);
+
+        horizontalLayout_12->addWidget(replaceSpinBox);
+
 
         verticalLayout_4->addWidget(groupBox_3);
 
@@ -363,7 +402,7 @@ public:
 
         retranslateUi(QGraphUtilityTestClass);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(QGraphUtilityTestClass);
@@ -375,12 +414,14 @@ public:
         label->setText(QApplication::translate("QGraphUtilityTestClass", "Vertexes:", Q_NULLPTR));
         label_2->setText(QApplication::translate("QGraphUtilityTestClass", "Edges", Q_NULLPTR));
         label_3->setText(QApplication::translate("QGraphUtilityTestClass", "Probability", Q_NULLPTR));
+        label_6->setText(QApplication::translate("QGraphUtilityTestClass", "Degree", Q_NULLPTR));
         graphTypeComboBox->clear();
         graphTypeComboBox->insertItems(0, QStringList()
          << QApplication::translate("QGraphUtilityTestClass", "Fixed Edges", Q_NULLPTR)
          << QApplication::translate("QGraphUtilityTestClass", "Fixed Probability (Digraph)", Q_NULLPTR)
          << QApplication::translate("QGraphUtilityTestClass", "Strong Connected Digraph", Q_NULLPTR)
          << QApplication::translate("QGraphUtilityTestClass", "Fixed Probability", Q_NULLPTR)
+         << QApplication::translate("QGraphUtilityTestClass", "Fixed Degree", Q_NULLPTR)
         );
         transponeGraphRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Transponed Graph", Q_NULLPTR));
         dijkstraRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Dijkstra", Q_NULLPTR));
@@ -398,8 +439,11 @@ public:
         generateButton->setText(QApplication::translate("QGraphUtilityTestClass", "Generate new graph", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("QGraphUtilityTestClass", "Zestaw 1, 3, 4, 2.3", Q_NULLPTR));
         label_5->setText(QApplication::translate("QGraphUtilityTestClass", "Number sequence", Q_NULLPTR));
+        sequenceTextEdit->setPlainText(QApplication::translate("QGraphUtilityTestClass", "1 2 3 4 4 3 5", Q_NULLPTR));
         groupBox_3->setTitle(QApplication::translate("QGraphUtilityTestClass", "Preferences", Q_NULLPTR));
         colorize2CheckBox->setText(QApplication::translate("QGraphUtilityTestClass", "Colorize", Q_NULLPTR));
+        gccRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Greatest Connected Compound", Q_NULLPTR));
+        replaceEdgesRadio->setText(QApplication::translate("QGraphUtilityTestClass", "Replace Edges", Q_NULLPTR));
         drawButton->setText(QApplication::translate("QGraphUtilityTestClass", "Draw Graph", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("QGraphUtilityTestClass", "Zestaw 2", Q_NULLPTR));
         graphShowLabel->setText(QApplication::translate("QGraphUtilityTestClass", "First Graph", Q_NULLPTR));

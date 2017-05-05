@@ -21,6 +21,7 @@ class Graph : public QObject
     static Graph* generateRandomGraphFixedEdges(int n, int l);
     static Graph* generateRandomGraphFixedProbability(int n, double p);
     static Graph* generateRandomDigraphFixedProbability(int n, double p);
+    static Graph* generateRandomKRegularGraphFixedDegree(int n, int k);
 
 public:
     class GraphException: public std::exception
@@ -48,7 +49,8 @@ public:
     {
         FixedEdges,
         FixedProbability,
-        DigraphFixedProbability
+        DigraphFixedProbability,
+        KRegularFixedDegree
     };
 
     //Typedefs
@@ -88,6 +90,10 @@ public:
     bool removeEdge(Edge* edge);
 
     void setRandomWeights(int start, int end);
+    void restoreDegreeOfVertexes();
+
+    void replaceEdges(Edge* firstEdge, Edge* secondEdge);
+    void randomizeGraphBySwitchingEdges(int changes = 0);
 
     //State announcers
     bool isVertexesConnected(Vertex* start, Vertex* end, bool oriented = false);

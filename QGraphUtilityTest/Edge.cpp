@@ -76,6 +76,17 @@ bool Edge::setEnd(Vertex *end)
         if(!_oriented && _start != nullptr)
             end->addNeighbour(_start);
     }
+    else
+    {
+        if(!_oriented && _start != nullptr)
+            _start->deleteNeighbour(_end);
+        _end->deleteNeighbour(_start);
+        _end->deleteEdge(this);
+        _end = end;
+        end->addEdge(this);
+        if(!_oriented && _start != nullptr)
+            end->addNeighbour(_start);
+    }
 
     return true;
 }

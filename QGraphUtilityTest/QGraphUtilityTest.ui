@@ -21,7 +21,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <property name="autoFillBackground">
@@ -89,6 +89,20 @@
                 </item>
                </layout>
               </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_13">
+                <item>
+                 <widget class="QLabel" name="label_6">
+                  <property name="text">
+                   <string>Degree</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="degreeSpinBox"/>
+                </item>
+               </layout>
+              </item>
              </layout>
             </item>
            </layout>
@@ -113,6 +127,11 @@
             <item>
              <property name="text">
               <string>Fixed Probability</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Fixed Degree</string>
              </property>
             </item>
            </widget>
@@ -262,7 +281,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QPlainTextEdit" name="sequenceTextEdit"/>
+           <widget class="QPlainTextEdit" name="sequenceTextEdit">
+            <property name="plainText">
+             <string>1 2 3 4 4 3 5</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -279,6 +302,30 @@
              </property>
              <property name="checked">
               <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="gccRadio">
+             <property name="text">
+              <string>Greatest Connected Compound</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="replaceEdgesRadio">
+             <property name="text">
+              <string>Replace Edges</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="replaceSpinBox">
+             <property name="minimum">
+              <number>0</number>
+             </property>
+             <property name="value">
+              <number>0</number>
              </property>
             </widget>
            </item>

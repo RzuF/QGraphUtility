@@ -43,6 +43,15 @@ void QGraphUtilityTest::on_generateButton_clicked()
             randomGraph = Graph::generateRandomGraph(ui.vertexSpinBox->value(), ui.probabilitySpinBox->value(), Graph::RandomGraph::FixedProbability);
             ui.additionalInfoLabel->setText(randomGraph->isConnected() ? "Connected" : "Not Connected");
             break;
+
+        case 4:
+            randomGraph = Graph::generateRandomGraph(ui.vertexSpinBox->value(), ui.degreeSpinBox->value(), Graph::RandomGraph::KRegularFixedDegree);
+            if(!randomGraph.data())
+            {
+                ui.graphShowLabel->setText("Invalid data!");
+                return;
+            }
+            break;
         }
 
         if(ui.graphTypeComboBox->currentIndex() == 3 && ui.dijkstraRadio->isChecked())
@@ -170,6 +179,7 @@ void QGraphUtilityTest::on_vertexSpinBox_valueChanged(int arg1)
 {
     ui.edgeSpinBox->setMaximum(arg1*(arg1-1)/2);
     ui.bellmanFordSpinBox->setMaximum(arg1-1);
+    ui.degreeSpinBox->setMaximum(arg1-1);
 }
 
 void QGraphUtilityTest::on_drawButton_clicked()
@@ -177,7 +187,18 @@ void QGraphUtilityTest::on_drawButton_clicked()
     Graph sequenceGraph;
 
     if(sequenceGraph.importFromString(ui.sequenceTextEdit->toPlainText(), Graph::Format::Sequence))
+    {
         sequenceGraph.drawGraph(ui.graphShowLabel, ui.colorize2CheckBox->isChecked());
+
+        if(ui.gccRadio->isEnabled())
+            sequenceGraph.GreatestConnectedCompound(ui.additionalInfoLabel);
+
+        if(ui.replaceEdgesRadio->isChecked())
+        {
+            sequenceGraph.randomizeGraphBySwitchingEdges(ui.replaceSpinBox->value());
+            sequenceGraph.drawGraph(ui.additionalInfoLabel, ui.colorize2CheckBox->isChecked());
+        }
+    }
     else
         ui.graphShowLabel->setText("Sequence is invalid.");
 }
